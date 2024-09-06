@@ -153,7 +153,6 @@ controller.login = async (req, res) => {
 controller.loginRefugio = async (req, res) => {
     try {
         req = matchedData(req)
-        console.log(req);
         
         const refugio = await refugioModel.findOne({
             where: { email: req.email },

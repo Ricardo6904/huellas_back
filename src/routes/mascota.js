@@ -24,6 +24,8 @@ router.get('/', mascotaController.obtenerMascotas)
 
 router.get('/:idMascota', mascotaController.obtenerMascota)
 
+router.get('/refugio/:idRefugio', mascotaController.obtenerMascotasPorIdFundacion)
+
 router.post('/', mascotaController.crearMascota)
 
 module.exports = router
