@@ -19,6 +19,20 @@ const tokenSign = async (usuario) => {
     return sign
 }
 
+const tokenSignRefugio = async (refugio) => {
+    const sign = jwt.sign(
+        {
+            id: refugio.idRefugio,
+            rol: refugio.rol
+        },
+        JWT_SECRET,
+        {
+            expiresIn: '2h'
+        }
+    )
+    return sign
+}
+
 /**
  * Pasar el token de session jwt
  * @param {*} tokenJwt 
@@ -32,4 +46,4 @@ const verifyToken = async (tokenJwt) => {
     }
 }
 
-module.exports = { tokenSign, verifyToken}
+module.exports = { tokenSign, tokenSignRefugio, verifyToken}

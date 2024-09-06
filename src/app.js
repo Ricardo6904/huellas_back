@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname,'/storage')))
 // Intercepción de solicitudes
 morganBody(app, {
     noColors: true,
-    stream: loggerStream,
+    //stream: loggerStream,
     skip: function(req, res){
         return res.statusCode < 400
     }

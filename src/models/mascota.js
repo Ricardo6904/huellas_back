@@ -38,6 +38,9 @@ const mascota = sequelize.define('Mascota', {
   },
   esEsterilizado: {
     type: DataTypes.TINYINT
+  },
+  idRefugio: {
+    type: DataTypes.INTEGER
   }
 }, {
   tableName: 'mascota', // El nombre de la tabla en la base de datos

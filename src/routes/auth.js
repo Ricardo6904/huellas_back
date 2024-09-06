@@ -7,5 +7,9 @@ router.post('/register', validator.validatorRegistrarUsuario, authController.reg
 
 router.post('/login', validator.validatorLogin, authController.login)
 
+router.post('/registerRefugio', validator.validatorRegistrarRefugio, authController.registerRefugio)
+
+router.post('/loginRefugio', validator.validatorLoginRefugio,authController.loginRefugio)
+
 
 module.exports = router

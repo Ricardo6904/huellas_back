@@ -14,7 +14,29 @@ validator.validatorRegistrarUsuario = [
 ]
 
 validator.validatorLogin = [
-    check('correo').exists().notEmpty().isEmail(),
+    check('email').exists().notEmpty().isEmail(),
+    check('clave').exists().notEmpty(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
+
+validator.validatorRegistrarRefugio = [
+    check('nombre').exists().notEmpty().isLength({min:2, max:45}),
+    check('direccion').exists().notEmpty().isLength({min:2, max:45}),
+    check('ciudad').exists().notEmpty().isLength({min:2, max:45}),
+    check('provincia').exists().notEmpty(),
+    check('telefono').exists().notEmpty(),
+    check('email').exists().notEmpty().isEmail(),
+    check('rol').exists().notEmpty(),
+    check('clave').exists().notEmpty(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
+
+validator.validatorLoginRefugio = [
+    check('email').exists().notEmpty().isEmail(),
     check('clave').exists().notEmpty(),
     (req, res, next) => {
         return validateResults(req, res, next)

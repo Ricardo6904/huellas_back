@@ -16,7 +16,7 @@ const Usuario = sequelize.define('Usuario', {
     cedula: {
       type: DataTypes.STRING
     },
-    correo: {
+    email: {
       type: DataTypes.STRING
     },
     clave: {
