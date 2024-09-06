@@ -117,7 +117,6 @@ controller.login = async (req, res) => {
             const token = await tokenSign(user.toJSON());
 
             
-
             return res.send({ token, user, rol: 'usuario' });
 
         } else {
