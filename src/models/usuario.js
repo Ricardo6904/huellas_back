@@ -24,7 +24,7 @@ const Usuario = sequelize.define('Usuario', {
       select: false
     },
     rol:{
-      type: DataTypes.ENUM(["usuario", "administrador"]),
+      type: DataTypes.ENUM(["usuario", "admin"]),
     },
     provincia:{
       type: DataTypes.STRING
@@ -32,6 +32,9 @@ const Usuario = sequelize.define('Usuario', {
     ciudad:{
       type: DataTypes.STRING
     },
+    direccion: {
+      type: DataTypes.STRING
+    }
     /*parroquia:{
       type: DataTypes.STRING
     }*/

@@ -15,8 +15,10 @@ controller = {}
 controller.register = async (req, res) => {
     try {
         req = matchedData(req)
-        const claveUsuario = await encrypt(req.claveUsuario)
-        const body = { ...req, claveUsuario }
+        console.log(req);
+        
+        const clave = await encrypt(req.clave)
+        const body = { ...req, clave }
         const dataUsuario = await usuarioModel.create(body)
         dataUsuario.set('claveUsuario', undefined, { strict: false })
 
