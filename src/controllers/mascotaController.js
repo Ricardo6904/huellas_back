@@ -3,7 +3,7 @@ const { body, matchedData } = require('express-validator')
 const { mascotaModel } = require('../models')
 const handleErrors = require('../utils/handleErrors')
 
-controller.obtenerMascotas = async (req, res) => {
+/*controller.obtenerMascotas = async (req, res) => {
     try {
         const data = await mascotaModel.findAllData({})
         res.send({ data })
@@ -12,13 +12,35 @@ controller.obtenerMascotas = async (req, res) => {
         handleErrors(res, 'ERROR_GET_MASCOTAS', 403)
     }
 
-}
+}*/
 
 controller.obtenerMascota = async (req, res) => {
     try {
         const idMascota = req.params.idMascota
         const data = await mascotaModel.findOneData(idMascota)
         res.send({data})
+    } catch (error) {
+        handleErrors(res, 'ERROR_GET_MASCOTA', 403)
+    }
+}
+
+controller.obtenerMascotas = async (req, res) => {
+    try {
+        //parámetros de paginación
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const offset = (page - 1) * limit;
+
+        //consulta con paginación usando limit y offset
+        const {count, rows} = await mascotaModel.findAndCountAllData(limit, offset)
+
+        //devolver la respuesta con datos y paginación
+        res.send({
+            data: rows,
+            total: count,
+            totalPages: Math.ceil(count/limit),
+            currentPage: page
+        })
     } catch (error) {
         handleErrors(res, 'ERROR_GET_MASCOTA', 403)
     }
