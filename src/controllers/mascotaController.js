@@ -58,7 +58,8 @@ controller.crearMascota = async (req, res) => {
 
 controller.actualizarMascota = async (req, res) => {
     try {
-        const { idMascota, ...body } = req.body
+        const { idMascota } = req.params;
+        const body = req.body;
         const update = await mascotaModel.update(body, { where: { idMascota } })
         const data = await mascotaModel.findByPk(idMascota)
         res.send({ data })
