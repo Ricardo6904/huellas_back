@@ -14,6 +14,9 @@ const adopcion = sequelize.define(
         },
         idUsuario: {
             type: DataTypes.INTEGER
+        },
+        estado: {
+            type: DataTypes.INTEGER
         }
     },
     {
