@@ -1,6 +1,7 @@
 controller = {}
 const { body, matchedData } = require('express-validator')
 const { mascotaModel } = require('../models')
+const { storageModel } = require('../models')
 const handleErrors = require('../utils/handleErrors')
 
 /*controller.obtenerMascotas = async (req, res) => {
@@ -90,11 +91,21 @@ controller.actualizarMascota = async (req, res) => {
     }
 }
 
+//TODO: eliminar archivo imagen del servicio
+
 controller.eliminarMascota = async (req, res) => {
     try {
-
+        const idMascota = req.params.idMascota
+        const mascota = await mascotaModel.findOneData(idMascota)
+        const data = await mascotaModel.destroy({where:{idMascota}})
+        const idStorage = mascota.idStorage
+        
+        
+        const dataStorage = await storageModel.destroy( {where: {idStorage}})
+        console.log('qfwwbhjn', dataStorage);
+        res.send({msg:'Mascota eliminado'})
     } catch (error) {
-
+        handleHttpError(res, 'ERROR_DELETE_MASCOTA', 403)
     }
 }
 
