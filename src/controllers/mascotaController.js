@@ -3,6 +3,9 @@ const { body, matchedData } = require('express-validator')
 const { mascotaModel } = require('../models')
 const { storageModel } = require('../models')
 const handleErrors = require('../utils/handleErrors')
+const fs = require('fs')
+
+const MEDIA_PATH = `${__dirname}/../storage`
 
 /*controller.obtenerMascotas = async (req, res) => {
     try {
@@ -19,7 +22,7 @@ controller.obtenerMascota = async (req, res) => {
     try {
         const idMascota = req.params.idMascota
         const data = await mascotaModel.findOneData(idMascota)
-        res.send({data})
+        res.send({ data })
     } catch (error) {
         handleErrors(res, 'ERROR_GET_MASCOTA', 403)
     }
@@ -33,13 +36,13 @@ controller.obtenerMascotas = async (req, res) => {
         const offset = (page - 1) * limit;
 
         //consulta con paginación usando limit y offset
-        const {count, rows} = await mascotaModel.findAndCountAllData(limit, offset)
+        const { count, rows } = await mascotaModel.findAndCountAllData(limit, offset)
 
         //devolver la respuesta con datos y paginación
         res.send({
             data: rows,
             total: count,
-            totalPages: Math.ceil(count/limit),
+            totalPages: Math.ceil(count / limit),
             currentPage: page
         })
     } catch (error) {
@@ -49,20 +52,20 @@ controller.obtenerMascotas = async (req, res) => {
 
 controller.obtenerMascotasPorIdFundacion = async (req, res) => {
     try {
-        
+
         console.log(req.params);
         const idRefugio = req.params.idRefugio
-        
-        
+
+
         const data = await mascotaModel.findAllData({
-            where: {idRefugio: idRefugio}
+            where: { idRefugio: idRefugio }
         })
-        
-        if(!data){
+
+        if (!data) {
             handleHttpError(res, 'MASCOTA_FUNDACION_NOT_EXIST', 404)
             return
         }
-        res.send({data})
+        res.send({ data })
     } catch (error) {
         handleErrors(res, 'ERROR_GET_MASCOTA_FUNDACION', 403)
     }
@@ -91,20 +94,27 @@ controller.actualizarMascota = async (req, res) => {
     }
 }
 
-//TODO: eliminar archivo imagen del servicio
 
 controller.eliminarMascota = async (req, res) => {
     try {
         const idMascota = req.params.idMascota
         const mascota = await mascotaModel.findOneData(idMascota)
-        const data = await mascotaModel.destroy({where:{idMascota}})
+        const data = await mascotaModel.destroy({ where: { idMascota } })
         const idStorage = mascota.idStorage
-        
-        
-        const dataStorage = await storageModel.destroy( {where: {idStorage}})
-        console.log('qfwwbhjn', dataStorage);
-        res.send({msg:'Mascota eliminado'})
+
+        const dataFile = await storageModel.findByPk(idStorage)
+        const { filenameStorage } = dataFile
+
+        const filePath = `${MEDIA_PATH}/${filenameStorage}`
+
+        fs.unlinkSync(filePath)
+
+        const dataStorage = await storageModel.destroy({ where: { idStorage } })
+
+        res.send({ msg: 'Mascota eliminado' })
     } catch (error) {
+        console.log(error);
+        
         handleHttpError(res, 'ERROR_DELETE_MASCOTA', 403)
     }
 }
