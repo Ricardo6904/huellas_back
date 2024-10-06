@@ -9,4 +9,6 @@ router.get('/', storageController.obtenerStorages)
 
 router.post('/', uploadMiddleware.single('myfile'), storageController.crearStorage)
 
+router.delete('/:idStorage', storageController.eliminarStorage)
+
 module.exports = router

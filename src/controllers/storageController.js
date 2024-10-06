@@ -33,9 +33,10 @@ controller.obtenerStoragePorId = async (req, res) => {
 
 controller.eliminarStorage = async (req, res) => {
     try {
-        const id = req.params.id
+        const id = req.params.idStorage
         const dataFile = await storageModel.findByPk(id)
         const {filenameStorage} = dataFile
+        
         const filePath = `${MEDIA_PATH}/${filenameStorage}`
 
         fs.unlinkSync(filePath)
@@ -46,6 +47,8 @@ controller.eliminarStorage = async (req, res) => {
         }
         res.send({data})
     } catch (error) {
+        console.log(error);
+        
         handleErrors(res,'ERROR_DELETE_STORAGE', 403)
     }
 }
