@@ -1,4 +1,5 @@
 controller = {}
+const { Op } = require('sequelize')
 const { body, matchedData } = require('express-validator')
 const { mascotaModel } = require('../models')
 const { storageModel } = require('../models')
@@ -35,8 +36,27 @@ controller.obtenerMascotas = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const offset = (page - 1) * limit;
 
+        //filtros de búsqueda
+        const { nombreMascota, edadMascota, razaMascota } = req.query;
+
+        let filtro = {};
+
+        if (nombreMascota)
+            filtro.nombreMascota = { [Op.like]: `%${nombreMascota}%` }
+
+        if (razaMascota)
+            filtro.edadMascota = edadMascota
+
+        if (edadMascota)
+            filtro.razaMascota = razaMascota
+
+
         //consulta con paginación usando limit y offset
-        const { count, rows } = await mascotaModel.findAndCountAllData(limit, offset)
+        const { count, rows } = await mascotaModel.findAndCountAllData(
+            limit,
+            offset,
+            filtro
+        )
 
         //devolver la respuesta con datos y paginación
         res.send({
@@ -114,7 +134,7 @@ controller.eliminarMascota = async (req, res) => {
         res.send({ msg: 'Mascota eliminado' })
     } catch (error) {
         console.log(error);
-        
+
         handleHttpError(res, 'ERROR_DELETE_MASCOTA', 403)
     }
 }
