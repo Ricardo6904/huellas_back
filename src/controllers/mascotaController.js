@@ -37,18 +37,18 @@ controller.obtenerMascotas = async (req, res) => {
         const offset = (page - 1) * limit;
 
         //filtros de búsqueda
-        const { nombreMascota, edadMascota, razaMascota } = req.query;
+        const { nombreMascota, edadMascota, razaMascota, tamanoMascota } = req.query;
 
         let filtro = {};
 
         if (nombreMascota)
-            filtro.nombreMascota = { [Op.like]: `%${nombreMascota}%` }
-
-        if (razaMascota)
-            filtro.edadMascota = edadMascota
-
+            filtro.nombreMascota = { [Op.like]: `%${nombreMascota}%` };
         if (edadMascota)
-            filtro.razaMascota = razaMascota
+            filtro.edadMascota = edadMascota;
+        if (razaMascota)
+            filtro.razaMascota = razaMascota;
+        if(tamanoMascota)
+            filtro.tamanoMascota = tamanoMascota;
 
 
         //consulta con paginación usando limit y offset
