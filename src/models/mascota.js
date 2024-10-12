@@ -50,26 +50,37 @@ const mascota = sequelize.define('Mascota', {
 /**
  * Implementando modelo personalizado
  */
+mascota.belongsTo(Storage, {
+  foreignKey: 'idStorage',
+});
 
 mascota.findAllData = function () {
-  mascota.belongsTo(Storage, {
+  /* mascota.belongsTo(Storage, {
     foreignKey: 'idStorage',
-  })
+  }) */
   return mascota.findAll({ include: Storage })
 }
 
-mascota.findAndCountAllData = function(limit, offset, filtro){
-  mascota.belongsTo(Storage, {
-    foreignKey: 'idStorage',
-  });
-  
+mascota.findCountAllByIdRefugio = function (limit, offset, filtro) {
   return mascota.findAndCountAll({
     include: Storage,
     where: filtro,
     limit: limit,
     offset: offset
-  }
-)
+  })
+}
+
+mascota.findAndCountAllData = function (limit, offset, filtro) {
+  /* mascota.belongsTo(Storage, {
+    foreignKey: 'idStorage',
+  }); */
+
+  return mascota.findAndCountAll({
+    include: Storage,
+    where: filtro,
+    limit: limit,
+    offset: offset
+  })
 }
 
 mascota.findOneData = function (idMascota) {

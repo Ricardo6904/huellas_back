@@ -47,7 +47,7 @@ controller.obtenerMascotas = async (req, res) => {
             filtro.edadMascota = edadMascota;
         if (razaMascota)
             filtro.razaMascota = razaMascota;
-        if(tamanoMascota)
+        if (tamanoMascota)
             filtro.tamanoMascota = tamanoMascota;
 
 
@@ -69,11 +69,50 @@ controller.obtenerMascotas = async (req, res) => {
         handleErrors(res, 'ERROR_GET_MASCOTA', 403)
     }
 }
-
 controller.obtenerMascotasPorIdFundacion = async (req, res) => {
     try {
+        //parámetros de paginación
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const offset = (page - 1) * limit;
 
-        console.log(req.params);
+        const idRefugio = req.params.idRefugio
+        let filtro = {};
+        filtro.idRefugio = idRefugio
+        
+        //filtro por nombre
+        const { nombreMascota } = req.query;
+
+        if (nombreMascota) {
+            filtro.nombreMascota = { [Op.like]: `%${nombreMascota}%` };
+        }
+
+
+        const { count, rows } = await mascotaModel.findAndCountAllData(
+            limit,
+            offset,
+            filtro
+        )
+
+        if (!rows || rows.length === 0) {
+            handleHttpError(res, 'MASCOTA_FUNDACION_NOT_EXIST', 404)
+            return
+        }
+
+        res.send({
+            data: rows,
+            total: count,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        })
+    } catch (error) {
+        handleErrors(res, 'ERROR_GET_MASCOTA_FUNDACION', 403)
+    }
+}
+
+controller.obtenerMascotasPorIdFundacionOld = async (req, res) => {
+    try {
+
         const idRefugio = req.params.idRefugio
 
 
@@ -90,6 +129,7 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
         handleErrors(res, 'ERROR_GET_MASCOTA_FUNDACION', 403)
     }
 }
+
 
 controller.crearMascota = async (req, res) => {
     try {
