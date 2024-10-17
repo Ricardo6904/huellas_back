@@ -1,7 +1,7 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
 
-const Usuario = sequelize.define('Usuario', {
+const Usuario = sequelize.define('usuarios', {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
@@ -39,7 +39,7 @@ const Usuario = sequelize.define('Usuario', {
       type: DataTypes.STRING
     }*/
   }, {
-    tableName: 'usuario', // El nombre de la tabla en la base de datos
+    tableName: 'usuarios', // El nombre de la tabla en la base de datos
     timestamps: false // Si no tienes campos de timestamp (createdAt, updatedAt)
   });
   

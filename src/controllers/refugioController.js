@@ -5,7 +5,7 @@ const handleErrors = require('../utils/handleErrors')
 
 controller.obtenerRefugios = async (req, res) => {
     try {
-        const data = await refugioModel.findAllData({})
+        const data = await refugioModel.findAll({})
         res.send({ data })
     } catch (error) {
         console.log(error);

@@ -1,5 +1,5 @@
 const { matchedData } = require('express-validator')
-const { adopcionModel, mascotaModel } = require('../models')
+const { adopcionModel } = require('../models')
 const handleHttpError = require('../utils/handleErrors')
 
 const controller = {}
@@ -15,7 +15,7 @@ controller.obtenerAdopciones = async (req, res) => {
     }
 }
 
-//TODO
+
 controller.obtenerAdopcionPorIdRefugio = async (req, res) => {
     try {
         const idRefugio = req.params.idRefugio

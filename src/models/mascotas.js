@@ -2,35 +2,35 @@ const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
 const Storage = require('./storage')
 
-const mascota = sequelize.define('Mascota', {
-  idMascota: {
+const mascota = sequelize.define('mascotas', {
+  id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
     autoIncrement: true
   },
-  nombreMascota: {
+  nombre: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  razaMascota: {
+  raza: {
     type: DataTypes.STRING
   },
-  sexoMascota: {
+  sexo: {
     type: DataTypes.STRING
   },
-  edadMascota: {
+  edad: {
     type: DataTypes.STRING
   },
-  tamanoMascota: {
+  tamano: {
     type: DataTypes.STRING
   },
-  historiaMascota: {
+  historia: {
     type: DataTypes.STRING
   },
-  caracteristicaMascota: {
+  caracteristica: {
     type: DataTypes.STRING,
   },
-  condicionMascota: {
+  condicion: {
     type: DataTypes.STRING,
   },
   idStorage: {
@@ -43,7 +43,7 @@ const mascota = sequelize.define('Mascota', {
     type: DataTypes.INTEGER
   }
 }, {
-  tableName: 'mascota', // El nombre de la tabla en la base de datos
+  tableName: 'mascotas', // El nombre de la tabla en la base de datos
   timestamps: false // Si no tienes campos de timestamp (createdAt, updatedAt)
 });
 

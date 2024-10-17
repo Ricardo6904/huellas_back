@@ -2,16 +2,16 @@ const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
 
 const Storage = sequelize.define('Storage', {
-    idStorage:{
+    id:{
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
     },
-    urlStorage: {
+    url: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    filenameStorage: {
+    filename: {
         type: DataTypes.STRING
     }
 },{

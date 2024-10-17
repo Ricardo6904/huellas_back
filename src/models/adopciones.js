@@ -1,13 +1,13 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
-const Mascota = require('./mascota')
+const Mascota = require('./mascotas')
 const Storage = require('./storage')
-const Usuario = require('./usuario')
+const Usuario = require('./usuarios')
 
 const adopcion = sequelize.define(
-    'adopcion',
+    'adopciones',
     {
-        idAdopcion: {
+        id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -19,25 +19,28 @@ const adopcion = sequelize.define(
             type: DataTypes.INTEGER
         },
         estado: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
+        },
+        tipo: {
+            type: DataTypes.STRING
         }
     },
     {
         timestamps: true,
-        tableName: 'adopcion'
+        tableName: 'adopciones'
     }
 )
 
 //definir relaciones
-adopcion.belongsTo(Mascota, {foreignKey: 'idMascota'});
-Mascota.belongsTo(Storage, {foreignKey: 'idStorage'});
-adopcion.belongsTo(Usuario, {foreignKey: 'idUsuario'})
+adopcion.belongsTo(Mascota, { foreignKey: 'idMascota' });
+Mascota.belongsTo(Storage, { foreignKey: 'idStorage' });
+adopcion.belongsTo(Usuario, { foreignKey: 'idUsuario' })
 
 adopcion.findAllData = function () {
     return adopcion.findAll({
         include: [
             {
-                model:Mascota,
+                model: Mascota,
                 include: [Storage]
             },
             {

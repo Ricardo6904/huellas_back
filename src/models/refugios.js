@@ -2,8 +2,8 @@ const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
 const Storage = ('./storage.js')
 
-const refugio = sequelize.define('Refugio', {
-    idRefugio: {
+const refugio = sequelize.define('refugios', {
+    id: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
@@ -21,7 +21,7 @@ const refugio = sequelize.define('Refugio', {
     provincia: {
         type: DataTypes.STRING
     },
-    telefono: {
+    celular: {
         type: DataTypes.STRING
     },
     email: {
@@ -35,7 +35,7 @@ const refugio = sequelize.define('Refugio', {
         type: DataTypes.ENUM(["refugio", "administrador"]),
     },
 }, {
-    tableName: 'refugio',
+    tableName: 'refugios',
     timestamps: false
 })
 

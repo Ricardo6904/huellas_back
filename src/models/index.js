@@ -1,9 +1,9 @@
 const models = {
-    usuarioModel: require('./usuario'),
+    usuarioModel: require('./usuarios'),
     storageModel: require('./storage'),
-    mascotaModel: require('./mascota'),
-    adopcionModel: require('./adopcion'),
-    refugioModel: require('./refugio'),
+    mascotaModel: require('./mascotas'),
+    adopcionModel: require('./adopciones'),
+    refugioModel: require('./refugios'),
 }
 
 module.exports = models;
