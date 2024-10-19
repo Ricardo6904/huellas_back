@@ -61,19 +61,10 @@ mascota.findAllData = function () {
   return mascota.findAll({ include: Storage })
 }
 
-mascota.findCountAllByIdRefugio = function (limit, offset, filtro) {
-  return mascota.findAndCountAll({
-    include: Storage,
-    where: filtro,
-    limit: limit,
-    offset: offset
-  })
-}
+
 
 mascota.findAndCountAllData = function (limit, offset, filtro) {
-  /* mascota.belongsTo(Storage, {
-    foreignKey: 'idStorage',
-  }); */
+  
 
   return mascota.findAndCountAll({
     include: Storage,

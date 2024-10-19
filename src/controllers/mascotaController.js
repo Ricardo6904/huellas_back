@@ -69,14 +69,17 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
         const offset = (page - 1) * limit;
 
         const idRefugio = req.params.idRefugio
+        console.log(req.params);
+        
         let filtro = {};
         filtro.idRefugio = idRefugio
         
         //filtro por nombre
-        const { nombreMascota } = req.query;
-
-        if (nombreMascota) {
-            filtro.nombreMascota = { [Op.like]: `%${nombreMascota}%` };
+        const { nombre } = req.query;
+        console.log(req.query);
+        
+        if (nombre) {
+            filtro.nombre = { [Op.like]: `%${nombre}%` };
         }
 
 
@@ -86,10 +89,7 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
             filtro
         )
 
-        if (!rows || rows.length === 0) {
-            handleHttpError(res, 'MASCOTA_FUNDACION_NOT_EXIST', 404)
-            return
-        }
+        
 
         res.send({
             data: rows,
