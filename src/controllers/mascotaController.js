@@ -165,7 +165,7 @@ controller.eliminarMascota = async (req, res) => {
 
         const dataStorage = await storageModel.destroy({ where: { id:idStorage } })
 
-        res.send({ msg: 'Mascota eliminado' })
+        res.send({ msg: 'Mascota eliminada' })
     } catch (error) {
         console.log(error);
 
