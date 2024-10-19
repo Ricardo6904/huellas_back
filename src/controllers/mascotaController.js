@@ -153,17 +153,17 @@ controller.eliminarMascota = async (req, res) => {
     try {
         const idMascota = req.params.idMascota
         const mascota = await mascotaModel.findOneData(idMascota)
-        const data = await mascotaModel.destroy({ where: { idMascota } })
+        const data = await mascotaModel.destroy({ where: { id: idMascota } })
         const idStorage = mascota.idStorage
 
         const dataFile = await storageModel.findByPk(idStorage)
-        const { filenameStorage } = dataFile
+        const { filename } = dataFile
 
-        const filePath = `${MEDIA_PATH}/${filenameStorage}`
+        const filePath = `${MEDIA_PATH}/${filename}`
 
         fs.unlinkSync(filePath)
 
-        const dataStorage = await storageModel.destroy({ where: { idStorage } })
+        const dataStorage = await storageModel.destroy({ where: { id:idStorage } })
 
         res.send({ msg: 'Mascota eliminado' })
     } catch (error) {
