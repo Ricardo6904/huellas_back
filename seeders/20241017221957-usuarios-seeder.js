@@ -14,7 +14,7 @@ module.exports = {
         nombres: 'Ricardo Esteban',
         apellidos: 'Supe',
         cedula: '1805096904',
-        email: 'mnzioss@gmail.com.com',
+        email: 'mnzioss@gmail.com',
         clave: hashedPsw1,
         rol: 'admin',
         provincia: 'Tungurahua',

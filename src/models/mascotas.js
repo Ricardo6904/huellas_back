@@ -87,7 +87,7 @@ mascota.findOneData = function (idMascota) {
   mascota.belongsTo(Storage, {
     foreignKey: 'idStorage'
   })
-  return mascota.findOne({ where: { idMascota: idMascota }, include: Storage })
+  return mascota.findOne({ where: { id: idMascota }, include: Storage })
 }
 
 module.exports = mascota;

@@ -99,6 +99,8 @@ controller.registerRefugio = async (req, res) => {
 controller.login = async (req, res) => {
     try {
         req = matchedData(req)
+        console.log(req);
+        
         const { email, clave } = req;
 
         // Primero, busca en la tabla de usuarios
@@ -125,7 +127,7 @@ controller.login = async (req, res) => {
             // Si no es usuario, busca en la tabla de refugios
             let refugio = await refugioModel.findOne({
                 where: { email: email },
-                attributes: ['idRefugio', 'clave', 'nombre', 'rol', 'email']
+                attributes: ['id', 'clave', 'nombre', 'rol', 'email']
             });
 
             if (!refugio) {
@@ -158,7 +160,7 @@ controller.loginRefugio = async (req, res) => {
         
         const refugio = await refugioModel.findOne({
             where: { email: req.email },
-            attributes: ['idRefugio', 'clave', 'nombre', 'rol', 'email']
+            attributes: ['id', 'clave', 'nombre', 'rol', 'email']
         })
         if (!refugio) {
             handleHttpError(res, 'REFUGIO_NOT_EXIST', 404)

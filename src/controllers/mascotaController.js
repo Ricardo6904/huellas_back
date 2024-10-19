@@ -8,21 +8,13 @@ const fs = require('fs')
 
 const MEDIA_PATH = `${__dirname}/../storage`
 
-/*controller.obtenerMascotas = async (req, res) => {
-    try {
-        const data = await mascotaModel.findAllData({})
-        res.send({ data })
-    } catch (error) {
-        console.log(error);
-        handleErrors(res, 'ERROR_GET_MASCOTAS', 403)
-    }
-
-}*/
 
 controller.obtenerMascota = async (req, res) => {
     try {
-        const idMascota = req.params.idMascota
-        const data = await mascotaModel.findOneData(idMascota)
+        const id = req.params.id
+        console.log(req.params);
+        
+        const data = await mascotaModel.findOneData(id)
         res.send({ data })
     } catch (error) {
         handleErrors(res, 'ERROR_GET_MASCOTA', 403)
@@ -37,18 +29,18 @@ controller.obtenerMascotas = async (req, res) => {
         const offset = (page - 1) * limit;
 
         //filtros de búsqueda
-        const { nombreMascota, edadMascota, razaMascota, tamanoMascota } = req.query;
+        const { nombre, edad, raza, tamano } = req.query;
 
         let filtro = {};
 
-        if (nombreMascota)
-            filtro.nombreMascota = { [Op.like]: `%${nombreMascota}%` };
-        if (edadMascota)
-            filtro.edadMascota = edadMascota;
-        if (razaMascota)
-            filtro.razaMascota = razaMascota;
-        if (tamanoMascota)
-            filtro.tamanoMascota = tamanoMascota;
+        if (nombre)
+            filtro.nombre = { [Op.like]: `%${nombre}%` };
+        if (edad)
+            filtro.edad = edad;
+        if (raza)
+            filtro.raza = raza;
+        if (tamano)
+            filtro.tamano = tamano;
 
 
         //consulta con paginación usando limit y offset
@@ -145,8 +137,10 @@ controller.crearMascota = async (req, res) => {
 controller.actualizarMascota = async (req, res) => {
     try {
         const { idMascota } = req.params;
+        console.log(req.params);
+        
         const body = req.body;
-        const update = await mascotaModel.update(body, { where: { idMascota } })
+        const update = await mascotaModel.update(body, { where: { id: idMascota } })
         const data = await mascotaModel.findByPk(idMascota)
         res.send({ data })
     } catch (error) {

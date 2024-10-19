@@ -15,9 +15,9 @@ controller.crearStorage = async (req, res) => {
     const { body, file } = req
     console.log(file);
     const fileData = {
-        idStorage: 0,
-        filenameStorage: file.filename,
-        urlStorage: `${PUBLIC_URL}/${file.filename}`
+        id: 0,
+        filename: file.filename,
+        url: `${PUBLIC_URL}/${file.filename}`
     }
     const data = await storageModel.create(fileData)
     res.send({data})
@@ -33,11 +33,11 @@ controller.obtenerStoragePorId = async (req, res) => {
 
 controller.eliminarStorage = async (req, res) => {
     try {
-        const id = req.params.idStorage
+        const id = req.params.id
         const dataFile = await storageModel.findByPk(id)
-        const {filenameStorage} = dataFile
+        const {filename} = dataFile
         
-        const filePath = `${MEDIA_PATH}/${filenameStorage}`
+        const filePath = `${MEDIA_PATH}/${filename}`
 
         fs.unlinkSync(filePath)
         
