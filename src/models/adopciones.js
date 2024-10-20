@@ -22,6 +22,7 @@ const adopcion = sequelize.define(
             type: DataTypes.STRING
         },
         tipo: {
+            allowNull: true,
             type: DataTypes.STRING
         }
     },

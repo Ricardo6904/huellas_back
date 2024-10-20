@@ -6,6 +6,7 @@ validator.validatorCrearAdopcion = [
     check('idMascota').exists().notEmpty().isNumeric(),
     check('idUsuario').exists().notEmpty().isNumeric(),
     check('estado').exists().notEmpty(),
+    check('tipo').exists().notEmpty(),
     (req, res, next) => {
         return validateResults(req, res, next)
     }

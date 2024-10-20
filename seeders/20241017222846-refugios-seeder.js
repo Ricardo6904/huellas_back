@@ -26,8 +26,8 @@ module.exports = {
         ciudad: 'Quito',
         provincia: 'Pichincha',
         celular: '0976543210',
-        email: 'esperanza@example.com',
-        rol: 'user',
+        email: 'refugio1@gmail.com',
+        rol: 'refugio',
         clave: hashedPassword2
       }
     ], {});

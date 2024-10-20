@@ -40,6 +40,8 @@ controller.crearAdopcion = async (req, res) => {
     try {
         const usuario = req.usuario
         req = matchedData(req)
+        console.log(req);
+        
         const data = await adopcionModel.create(req)
         res.send({ data, usuario })
     } catch (error) {

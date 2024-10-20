@@ -16,7 +16,7 @@ module.exports = {
         cedula: '1805096904',
         email: 'mnzioss@gmail.com',
         clave: hashedPsw1,
-        rol: 'admin',
+        rol: 'usuario',
         provincia: 'Tungurahua',
         ciudad: 'Ambato',
         direccion: 'Carihuayrazo y Sangay'
