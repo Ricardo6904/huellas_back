@@ -40,6 +40,7 @@ const mascota = sequelize.define('mascotas', {
     type: DataTypes.TINYINT
   },
   idRefugio: {
+    allowNull: false,
     type: DataTypes.INTEGER
   }
 }, {
