@@ -37,12 +37,14 @@ adopcion.belongsTo(Mascota, { foreignKey: 'idMascota' });
 Mascota.belongsTo(Storage, { foreignKey: 'idStorage' });
 adopcion.belongsTo(Usuario, { foreignKey: 'idUsuario' })
 
-adopcion.findAllData = function () {
+adopcion.findAllData = function (idRefugio) {
     return adopcion.findAll({
+        //where: {idMascota: idRefugio},
         include: [
             {
                 model: Mascota,
-                include: [Storage]
+                include: [Storage],
+                where: {idRefugio: idRefugio}
             },
             {
                 model: Usuario,

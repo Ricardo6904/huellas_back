@@ -18,10 +18,10 @@ controller.obtenerAdopciones = async (req, res) => {
 
 controller.obtenerAdopcionPorIdRefugio = async (req, res) => {
     try {
+        console.log(req.params);
         const idRefugio = req.params.idRefugio
-        const data = await adopcionModel.findAllData({
-            where: { idRefugio: idRefugio }
-        })
+        
+        const data = await adopcionModel.findAllData(idRefugio)
 
         if (!data) {
             handleHttpError(res, 'ADOPCION_MASCOTA_NOT_EXIST', 403)

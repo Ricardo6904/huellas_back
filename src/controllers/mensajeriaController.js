@@ -9,7 +9,7 @@ controller.solicitarAdopcion = async (req, res) => {
         const { email, telefono, mascota } = req.body;
 
         //crear el mensaje
-        const mensaje = `Tienes una solicitud pendiente para adoptar a ${mascota.nombreMascota}, 
+        const mensaje = `Tienes una solicitud pendiente para adoptar a ${mascota.nombre}, 
         por favor verifica los datos del remitente ${email} para que te pongas en contacto y continúe el proceso de adopción...`;
 
         //enviar correo

@@ -14,6 +14,7 @@ module.exports = {
         nombres: 'Ricardo Esteban',
         apellidos: 'Supe',
         cedula: '1805096904',
+        celular: '0983041387',
         email: 'mnzioss@gmail.com',
         clave: hashedPsw1,
         rol: 'usuario',

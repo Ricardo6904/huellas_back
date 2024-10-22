@@ -19,8 +19,12 @@ module.exports = {
         type:Sequelize.STRING
       },
       cedula:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
+      },
+      celular: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       email:{
         allowNull: false,

@@ -10,7 +10,7 @@ const checkRol = require('../middleware/rol')
 router.get('/', controller.obtenerAdopciones)
 
 //Lista de adopciones por refugio
-router.get('/:idRefugio', controller.obtenerAdopcionPorIdRefugio)
+router.get('/mascota/refugio/:idRefugio', controller.obtenerAdopcionPorIdRefugio)
 
 //router.post('/', authMiddleware, validator.validatorCrearAdopcion, controller.crearAdopcion)
 router.post('/', validator.validatorCrearAdopcion, controller.crearAdopcion)
