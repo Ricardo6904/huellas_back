@@ -10,6 +10,8 @@ const {dbConnectMySql} = require('./config/mysql')
 const path = require('path')
 const app = express();
 
+app.use(express.json());
+
 
 
 //configuraciones

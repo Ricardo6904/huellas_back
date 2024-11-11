@@ -2,49 +2,47 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('refugios', {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.createTable('mascotas-perdidas', { 
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      idUsuario: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'usuarios',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true
+      },
       nombre: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      direccion: {
+      raza: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      ciudad: {
+      sexo: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      provincia: {
+      descripcion: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      celular: {
+      fecha: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      ubicación: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      rol: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      clave: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      redesSociales:{
-        allowNull: true,
-        type: Sequelize.JSON
       },
       idStorage: {
         type: Sequelize.INTEGER,
@@ -55,13 +53,13 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: true
-      }
-    });
-
+      },
+     });
+     
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('refugios');
-
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('mascotas-perdidas');
+     
   }
 };

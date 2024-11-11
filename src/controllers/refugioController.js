@@ -17,16 +17,25 @@ controller.obtenerRefugios = async (req, res) => {
 controller.obtenerRefugio = async (req, res) => {
     try {
         const idRefugio = req.params.idRefugio
-        const data = await refugioModel.findOneData(idRefugio)
+        /* const data = await refugioModel.findOneData(idRefugio) */
+        const data = await refugioModel.findOne({idRefugio})
+        console.log(data);
+        
         res.send({data})
     } catch (error) {
         handleErrors(res, 'ERROR_GET_REFUGIO', 403)
+        console.log(error);
+        
     }
 }
 
 controller.crearRefugio = async (req, res) => {
     try {
         const { body } = req
+        // Verifica si `redesSociales` es una cadena y la convierte a JSON
+        if (typeof body.redesSociales === 'string') {
+            body.redesSociales = JSON.parse(body.redesSociales);
+        }
         const data = await refugioModel.create(body)
         res.send({ data })
     } catch (error) {
@@ -37,11 +46,21 @@ controller.crearRefugio = async (req, res) => {
 
 controller.actualizarRefugio = async (req, res) => {
     try {
-        const { idRefugio, ...body } = req.body
-        const update = await refugioModel.update(body, { where: { idRefugio } })
+        const body = req.body
+        const idRefugio = req.params.idRefugio
+        console.log(req.body);
+        
+        // Verifica si `redesSociales` es una cadena y la convierte a JSON
+        if (typeof body.redesSociales === 'string') {
+            body.redesSociales = JSON.parse(body.redesSociales);
+        }
+        
+        const update = await refugioModel.update(body, { where: { id:idRefugio } })
         const data = await refugioModel.findByPk(idRefugio)
         res.send({ data })
     } catch (error) {
+        console.log(error);
+        
         handleErrors(res, 'ERROR_UPDATE_REFUGIO', 403)
     }
 }
