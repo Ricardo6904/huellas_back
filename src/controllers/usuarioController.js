@@ -14,8 +14,6 @@ controller.obtenerUsuarios = async (req, res) => {
     }
 }
 
-
-
 controller.crearUsuario = async (req, res) => {
     try {
         //const body = matchedData(req)
@@ -25,7 +23,6 @@ controller.crearUsuario = async (req, res) => {
     } catch (error) {
         handleHttpError(res, 'ERROR_CREATE_USUARIOS', 403)
     }
-
 }
 
 controller.obtenerUsuario = async (req, res) => {

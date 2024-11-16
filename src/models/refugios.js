@@ -35,8 +35,8 @@ const refugio = sequelize.define('refugios', {
         type: DataTypes.ENUM(["refugio", "administrador"]),
     },
     redesSociales: {
-        type: DataTypes.JSON
-        
+        type: DataTypes.JSON,
+        allowNull: true,
     }
 }, {
     tableName: 'refugios',

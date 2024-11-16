@@ -39,6 +39,8 @@ controller.crearRefugio = async (req, res) => {
         const data = await refugioModel.create(body)
         res.send({ data })
     } catch (error) {
+        console.log(error);
+        
         handleErrors(res, 'ERROR_CREATE_REFUGIO', 403)
     }
 
@@ -67,7 +69,7 @@ controller.actualizarRefugio = async (req, res) => {
 
 controller.eliminarRefugio = async (req, res) => {
     try {
-
+        
     } catch (error) {
 
     }
