@@ -1,6 +1,6 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
-const Storage = ('./storage.js')
+const Storage = require('./storage')
 
 const refugio = sequelize.define('refugios', {
     id: {
@@ -43,15 +43,15 @@ const refugio = sequelize.define('refugios', {
     timestamps: false
 })
 
-/* refugio.belongsTo(Storage, {
+refugio.belongsTo(Storage, {
     foreignKey: 'idStorage',
-  });
+});
 
-  refugio.findOneData = function (idRefugio) {
+refugio.findOneData = function (idRefugio) {
     refugio.belongsTo(Storage, {
-      foreignKey: 'idStorage'
+        foreignKey: 'idStorage'
     })
     return refugio.findOne({ where: { id: idRefugio }, include: Storage })
-  } */
+}
 
 module.exports = refugio;

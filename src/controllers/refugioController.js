@@ -17,8 +17,10 @@ controller.obtenerRefugios = async (req, res) => {
 controller.obtenerRefugio = async (req, res) => {
     try {
         const idRefugio = req.params.idRefugio
-        /* const data = await refugioModel.findOneData(idRefugio) */
-        const data = await refugioModel.findOne({idRefugio})
+        console.log('dfwe!!!', req.params);
+        
+        const data = await refugioModel.findOneData(idRefugio)
+        //const data = await refugioModel.findOne({idRefugio})
         console.log(data);
         
         res.send({data})

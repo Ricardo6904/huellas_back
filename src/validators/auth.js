@@ -31,7 +31,7 @@ validator.validatorRegistrarRefugio = [
     check('direccion').exists().notEmpty().isLength({min:2, max:45}),
     check('ciudad').exists().notEmpty().isLength({min:2, max:45}),
     check('provincia').exists().notEmpty(),
-    check('telefono').exists().notEmpty(),
+    check('celular').exists().notEmpty(),
     check('email').exists().notEmpty().isEmail(),
     check('rol').exists().notEmpty(),
     check('clave').exists().notEmpty(),

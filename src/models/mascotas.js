@@ -1,6 +1,7 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
-const Storage = require('./storage')
+const Storage = require('./storage');
+const refugio = require('./refugios');
 
 const mascota = sequelize.define('mascotas', {
   id: {
@@ -54,21 +55,27 @@ const mascota = sequelize.define('mascotas', {
 mascota.belongsTo(Storage, {
   foreignKey: 'idStorage',
 });
+mascota.belongsTo(refugio, {
+  foreignKey: 'idRefugio'
+})
 
 mascota.findAllData = function () {
   /* mascota.belongsTo(Storage, {
     foreignKey: 'idStorage',
   }) */
-  return mascota.findAll({ include: Storage })
+  return mascota.findAll({ include: [Storage, refugio] })
 }
 
 
 
 mascota.findAndCountAllData = function (limit, offset, filtro) {
-  
+
 
   return mascota.findAndCountAll({
-    include: Storage,
+    include: [Storage, {
+      model: refugio,
+      include: [Storage]
+    }],
     where: filtro,
     limit: limit,
     offset: offset
@@ -79,7 +86,12 @@ mascota.findOneData = function (idMascota) {
   mascota.belongsTo(Storage, {
     foreignKey: 'idStorage'
   })
-  return mascota.findOne({ where: { id: idMascota }, include: Storage })
+  return mascota.findOne({
+    where: { id: idMascota }, include: [Storage, {
+      model: refugio,
+      include: [Storage]
+    }]
+  })
 }
 
 module.exports = mascota;
