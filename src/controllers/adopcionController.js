@@ -20,7 +20,7 @@ controller.obtenerAdopcionPorIdRefugio = async (req, res) => {
     try {
         console.log(req.params);
         const idRefugio = req.params.idRefugio
-        
+
         const data = await adopcionModel.findAllData(idRefugio)
 
         if (!data) {
@@ -39,11 +39,26 @@ controller.obtenerAdopcionPorIdRefugio = async (req, res) => {
 controller.crearAdopcion = async (req, res) => {
     try {
         const usuario = req.usuario
+
         req = matchedData(req)
-        console.log(req);
-        
+
+        const adopcionExistente = await adopcionModel.findOne({
+            where: {
+                idMascota: req.idMascota,
+                idUsuario: req.idUsuario,
+            }
+        })
+
+        if (adopcionExistente && adopcionExistente.estado === 'pendiente') {
+            return res.status(400).send({
+                message: "Ya tiene una solicitud pendiente para esta mascota",
+            });
+        }
+
         const data = await adopcionModel.create(req)
         res.send({ data, usuario })
+
+
     } catch (error) {
         handleHttpError(res, 'ERROR_CREATE_ADOPCION', 403)
     }

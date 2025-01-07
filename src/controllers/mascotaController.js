@@ -13,7 +13,7 @@ controller.obtenerMascota = async (req, res) => {
     try {
         const id = req.params.id
         console.log(req.params);
-        
+
         const data = await mascotaModel.findOneData(id)
         res.send({ data })
     } catch (error) {
@@ -31,7 +31,14 @@ controller.obtenerMascotas = async (req, res) => {
         //filtros de búsqueda
         const { nombre, edad, raza, tamano } = req.query;
 
-        let filtro = {};
+        let filtro = {
+            solicitudesPendientes: {
+                [Op.lt]: 3, // Filtrar mascotas con menos de 3 solicitudes pendientes
+            },
+            estado: {
+                [Op.ne]: 'Adoptado'
+            }
+        };
 
         if (nombre)
             filtro.nombre = { [Op.like]: `%${nombre}%` };
@@ -70,14 +77,14 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
 
         const idRefugio = req.params.idRefugio
         console.log(req.params);
-        
+
         let filtro = {};
         filtro.idRefugio = idRefugio
-        
+
         //filtro por nombre
         const { nombre } = req.query;
         console.log(req.query);
-        
+
         if (nombre) {
             filtro.nombre = { [Op.like]: `%${nombre}%` };
         }
@@ -89,7 +96,7 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
             filtro
         )
 
-        
+
 
         res.send({
             data: rows,
@@ -137,12 +144,25 @@ controller.crearMascota = async (req, res) => {
 controller.actualizarMascota = async (req, res) => {
     try {
         const { idMascota } = req.params;
-        console.log(req.params);
-        
+        const { estado } = req.params;
+
+        // Buscar la mascota
+        const mascota = await mascotaModel.findByPk(idMascota);
+
+        if (!mascota) {
+            return res.status(404).send({ message: 'Mascota no encontrada' });
+        }
+
+        // Si cambia a "adoptado", restablecer solicitudes pendientes
+        if (estado === 'adoptado') {
+            mascota.solicitudesPendientes = 0;
+        }
+
+
         const body = req.body;
         const update = await mascotaModel.update(body, { where: { id: idMascota } })
         const data = await mascotaModel.findByPk(idMascota)
-        res.send({ data })
+        res.send({ message: 'Mascota actualizada', data: mascota });
     } catch (error) {
         handleErrors(res, 'ERROR_UPDATE_MASCOTA', 403)
     }
@@ -163,7 +183,7 @@ controller.eliminarMascota = async (req, res) => {
 
         fs.unlinkSync(filePath)
 
-        const dataStorage = await storageModel.destroy({ where: { id:idStorage } })
+        const dataStorage = await storageModel.destroy({ where: { id: idStorage } })
 
         res.send({ msg: 'Mascota eliminada' })
     } catch (error) {
@@ -172,5 +192,92 @@ controller.eliminarMascota = async (req, res) => {
         handleHttpError(res, 'ERROR_DELETE_MASCOTA', 403)
     }
 }
+
+controller.incrementarSolicitudes = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // Buscar la mascota por ID
+        const mascota = await mascotaModel.findByPk(id);
+
+        // Verificar si la mascota existe
+        if (!mascota) {
+            return res.status(404).send({ message: 'Mascota no encontrada' });
+        }
+
+        // Verificar el estado de la mascota
+        if (mascota.estado === 'adoptado') {
+            return res.status(400).send({ message: 'No se pueden realizar solicitudes para una mascota adoptada' });
+        }
+
+        // Incrementar solicitudes pendientes
+        if (mascota.solicitudesPendientes < 3)
+            mascota.solicitudesPendientes += 1;
+
+        await mascota.save();
+
+        res.send({ message: 'Solicitud registrada', data: mascota });
+    } catch (error) {
+        console.error(error);
+        handleErrors(res, 'ERROR_INCREMENTAR_SOLICITUDES', 500);
+    }
+}
+
+controller.decrementarSolicitudes = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Buscar la mascota por ID
+        const mascota = await mascotaModel.findByPk(id);
+        console.log(id, mascota);
+        
+
+        // Verificar si la mascota existe
+        if (!mascota) {
+            return res.status(404).send({ message: 'Mascota no encontrada' });
+        }
+
+        // Verificar que el número de solicitudes pendientes sea mayor a 0
+        if (mascota.solicitudesPendientes === 0) {
+            return res.status(400).send({ message: 'No hay solicitudes pendientes para decrementar' });
+        }
+
+        // Decrementar solicitudes pendientes
+        mascota.solicitudesPendientes -= 1;
+        await mascota.save();
+
+        res.send({ message: 'Solicitud eliminada', data: mascota });
+    } catch (error) {
+        console.error(error);
+        handleErrors(res, 'ERROR_DECREMENTAR_SOLICITUDES', 500);
+    }
+};
+
+controller.mascotaAdoptada = async(req,res) => {
+    try {
+        const { idMascota } = req.params;
+
+        // Buscar la mascota por ID
+        const mascota = await mascotaModel.findByPk(idMascota);
+
+        // Verificar si la mascota existe
+        if (!mascota) {
+            return res.status(404).send({ message: 'Mascota no encontrada' });
+        }
+
+        if (mascota.estado === 'Adoptado') {
+            return res.status(400).send({ message: 'Esta mascota ya ha sido adoptada.' });
+        }
+
+        // Decrementar solicitudes pendientes
+        mascota.estado = 'Adoptado';
+        await mascota.save();
+
+        res.send({ message: 'Estado actualizado', data: mascota });
+    } catch (error) {
+        handleErrors(res, 'ERROR_CAMBIAR_ESTADO_MASCOTA', 500);
+    }
+}
+
 
 module.exports = controller

@@ -43,6 +43,16 @@ const mascota = sequelize.define('mascotas', {
   idRefugio: {
     allowNull: false,
     type: DataTypes.INTEGER
+  },
+  estado: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: 'Disponible'
+  },
+  solicitudesPendientes: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   }
 }, {
   tableName: 'mascotas', // El nombre de la tabla en la base de datos

@@ -14,4 +14,10 @@ router.put('/:idMascota', mascotaController.actualizarMascota)
 
 router.delete('/:idMascota', mascotaController.eliminarMascota)
 
+router.post('/:id/incrementar-solicitudes', controller.incrementarSolicitudes)
+
+router.post('/:id/decrementar-solicitudes', controller.decrementarSolicitudes)
+
+router.post('/:id/mascotaAdoptada', controller.mascotaAdoptada)
+
 module.exports = router
