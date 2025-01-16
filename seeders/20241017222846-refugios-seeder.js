@@ -6,8 +6,7 @@ const { encrypt } = require('../src/utils/handlePassword');
 module.exports = {
   async up (queryInterface, Sequelize) {
     
-    const hashedPassword1 = await encrypt('refugio');
-    const hashedPassword2 = await encrypt('refugio');
+    const hashedPassword = await encrypt('refugio');
 
     await queryInterface.bulkInsert('refugios', [
       {
@@ -16,9 +15,9 @@ module.exports = {
         ciudad: 'Ambato',
         provincia: 'Tungurahua',
         celular: '0987654321',
-        email: 'refugio@gmail.com',
+        email: 'mnzioss@gmail.com',
         rol: 'admin',
-        clave: hashedPassword1,
+        clave: hashedPassword,
       },
       {
         nombre: 'Refugio Esperanza',
@@ -26,9 +25,9 @@ module.exports = {
         ciudad: 'Quito',
         provincia: 'Pichincha',
         celular: '0976543210',
-        email: 'refugio1@gmail.com',
+        email: 'motenezaca@gmail.com',
         rol: 'refugio',
-        clave: hashedPassword2
+        clave: hashedPassword
       }
     ], {});
   },
