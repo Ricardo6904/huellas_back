@@ -37,10 +37,17 @@ const Usuario = sequelize.define('usuarios', {
     },
     direccion: {
       type: DataTypes.STRING
+    },
+    estado: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      defaultValue: 'ACTIVO'
+    },
+    adopcionPendiente: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0
     }
-    /*parroquia:{
-      type: DataTypes.STRING
-    }*/
   }, {
     tableName: 'usuarios', // El nombre de la tabla en la base de datos
     timestamps: false // Si no tienes campos de timestamp (createdAt, updatedAt)

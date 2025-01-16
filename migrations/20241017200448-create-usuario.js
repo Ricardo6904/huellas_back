@@ -49,6 +49,16 @@ module.exports = {
       direccion: {
         allowNull: false,
         type:Sequelize.STRING
+      },
+      estado: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'ACTIVO'
+      },
+      adopcionPendiente: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       }
     })
   },

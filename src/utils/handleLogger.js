@@ -1,4 +1,4 @@
-const { IncomingWebhook } = require('@slack/webhook')
+/* const { IncomingWebhook } = require('@slack/webhook')
 const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK)
 
 const loggerStream = {
@@ -10,4 +10,4 @@ const loggerStream = {
     }
 };
 
-module.exports = loggerStream
+module.exports = loggerStream */

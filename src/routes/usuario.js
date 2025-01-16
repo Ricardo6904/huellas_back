@@ -15,4 +15,6 @@ router.put('/:idUsuario', usuarioController.actualizarUsuario)
 
 router.delete('/:idUsuario', usuarioController.eliminarUsuario)
 
+router.put('/:id/solicitudPendiente', usuarioController.actualizarCampoSolicitud)
+
 module.exports = router;
