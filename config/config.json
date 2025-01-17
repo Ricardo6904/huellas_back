@@ -2,21 +2,21 @@
   "development": {
     "username": "root",
     "password": "secret",
-    "database": "dbHuella",
+    "database": "adoptahuellasdb",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": "secret",
-    "database": "dbHuella",
+    "database": "adoptahuellasdb",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "admin",
-    "password": "BpQ2d4ftXZo7vFVo4rlg",
-    "database": "dbHuella",
+    "password": "Adoptahuellas2025",
+    "database": "adoptahuellasdb",
     "host": "adoptahuellasdb.cd02scigmyo0.us-east-2.rds.amazonaws.com",
     "dialect": "mysql",
     "port": 3306
