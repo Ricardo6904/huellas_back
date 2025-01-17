@@ -25,7 +25,7 @@ module.exports = {
         ciudad: 'Quito',
         provincia: 'Pichincha',
         celular: '0976543210',
-        email: 'motenezaca@gmail.com',
+        email: 'motenezaca1@gmail.com',
         rol: 'refugio',
         clave: hashedPassword
       }
