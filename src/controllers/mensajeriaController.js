@@ -1,6 +1,6 @@
-const { body } = require('express-validator');
+const { body, matchedData } = require('express-validator');
 const nodemailer = require('nodemailer');
-const { refugioModel } = require('../models')
+const { refugioModel, adopcionModel, usuarioModel, mascotaModel } = require('../models')
 
 controller = {}
 const emailService = {}
@@ -37,7 +37,7 @@ controller.solicitarAdopcion = async (req, res) => {
 }
 
 // Función para enviar correos
-emailService.sendEmail = async (to, subject,  html) => {
+emailService.sendEmail = async (to, subject, html) => {
     try {
         const mailOptions = {
             from: '"Adopta Huellas" <info@adoptahuellas.pet>', // Nombre y correo remitente
@@ -63,5 +63,74 @@ const transporter = nodemailer.createTransport({
         pass: 'AdoptaHuellas2025',          // Contraseña de tu cuenta
     },
 });
+controller.solicitudAceptada = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const adopcion = await adopcionModel.findOne({
+            where: { id: id }
+        })
+
+        const usuario = await usuarioModel.findOne({
+            where: { id: adopcion.idUsuario }
+        })
+        const mascota = await mascotaModel.findOne({
+            where: { id: adopcion.idMascota }
+        })
+        const mensaje = `
+            <p>¡Felicidades, ${usuario.nombres}  ${usuario.apellidos}!</p>
+            <p>Nos complace informarte que tu solicitud para adoptar a <strong>${mascota.nombre}</strong>, un/a ${mascota.raza}, ${mascota.edad}, ${mascota.sexo}, ha sido <strong>aprobada</strong>.</p>
+            <p>Estamos emocionados de que <strong>${mascota.nombre}</strong> pronto encuentre un hogar lleno de amor contigo. En breve, nuestro equipo se pondrá en contacto para coordinar los siguientes pasos y asegurarnos de que la transición sea lo más cómoda posible para ambos.</p>
+            <p>Gracias por abrir tu corazón y tu hogar para darle a <strong>${mascota.nombre}</strong> una nueva oportunidad de ser feliz.</p>
+            <p>Un saludo,<br>
+            El equipo de <strong>Adopta Huellas</strong></p>
+        `;
+
+        // Enviar correo
+        await emailService.sendEmail(usuario.email, '¡Felicidades! Tu solicitud ha sido aprobada 🎉', mensaje);
+
+        res.status(200).send({ message: 'Correo de aprobación enviado con éxito' });
+    } catch (error) {
+        console.error('Error al enviar correo de aprobación:', error);
+        res.status(500).send({ message: 'Hubo un error al procesar la solicitud' });
+    }
+};
+
+controller.solicitudRechazada = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const adopcion = await adopcionModel.findOne({
+            where: { id: id }
+        })
+        console.log('adopcion acepata', id, adopcion);
+
+        const usuario = await usuarioModel.findOne({
+            where: { id: adopcion.idUsuario }
+        })
+        const mascota = await mascotaModel.findOne({
+            where: { id: adopcion.idMascota }
+        })
+
+        const mensaje = `
+            <p>Hola, ${usuario.nombres} ${usuario.apellidos}.</p>
+            <p>Lamentamos informarte que, después de revisar tu solicitud para adoptar a <strong>${mascota.nombre}</strong>, ${mascota.raza}, ${mascota.edad}, ${mascota.sexo}, no ha sido posible aprobar la adopción en este momento.</p>
+            <p>Esta decisión no refleja tu capacidad de ofrecer un hogar amoroso, sino que responde a las necesidades específicas de <strong>${mascota.nombre}</strong> y los criterios de adopción establecidos por nuestro equipo.</p>
+            <p>Te invitamos a seguir participando en nuestras iniciativas de adopción, ya que muchas otras mascotas están esperando una oportunidad para formar parte de una familia.</p>
+            <p>Agradecemos tu interés y comprensión.<br>
+            Con afecto,<br>
+            El equipo de <strong>Adopta Huellas</strong></p>
+        `;
+
+        // Enviar correo
+        await emailService.sendEmail(usuario.dataValues.email, 'Decisión sobre tu solicitud de adopción', mensaje);
+
+        res.status(200).send({ message: 'Correo de rechazo enviado con éxito' });
+    } catch (error) {
+        console.error('Error al enviar correo de rechazo:', error);
+        res.status(500).send({ message: 'Hubo un error al procesar la solicitud' });
+    }
+};
+
 
 module.exports = controller

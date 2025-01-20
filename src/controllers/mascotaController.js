@@ -253,12 +253,13 @@ controller.decrementarSolicitudes = async (req, res) => {
     }
 };
 
+//todo
 controller.mascotaAdoptada = async(req,res) => {
     try {
-        const { idMascota } = req.params;
-
+        const { id } = req.params;
+        
         // Buscar la mascota por ID
-        const mascota = await mascotaModel.findByPk(idMascota);
+        const mascota = await mascotaModel.findByPk(id);
 
         // Verificar si la mascota existe
         if (!mascota) {

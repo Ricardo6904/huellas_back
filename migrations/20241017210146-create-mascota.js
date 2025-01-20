@@ -71,7 +71,7 @@ module.exports = {
       estado: {
         allowNull: false,
         type: Sequelize.STRING,
-        defaultValue: 'Disponible'
+        defaultValue: 'disponible'
       },
       especie: {
         allowNull: false,

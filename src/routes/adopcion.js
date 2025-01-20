@@ -15,4 +15,7 @@ router.get('/mascota/refugio/:idRefugio', controller.obtenerAdopcionPorIdRefugio
 //router.post('/', authMiddleware, validator.validatorCrearAdopcion, controller.crearAdopcion)
 router.post('/', validator.validatorCrearAdopcion, controller.crearAdopcion)
 
+router.put('/:id/aprobarSolicitud', controller.aprobarSolicitud)
+router.put('/:id/rechazarSolicitud', controller.rechazarSolicitud)
+
 module.exports = router

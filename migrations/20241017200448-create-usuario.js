@@ -19,7 +19,7 @@ module.exports = {
         type:Sequelize.STRING
       },
       cedula:{
-        allowNull: true,
+        allowNull: false,
         type:Sequelize.STRING
       },
       celular: {
@@ -53,7 +53,7 @@ module.exports = {
       estado: {
         allowNull: false,
         type: Sequelize.STRING,
-        defaultValue: 'ACTIVO'
+        defaultValue: 'activo'
       },
       adopcionPendiente: {
         allowNull: false,
