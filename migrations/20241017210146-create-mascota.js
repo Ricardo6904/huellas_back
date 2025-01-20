@@ -73,6 +73,10 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: 'Disponible'
       },
+      especie: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       solicitudesPendientes: {
         allowNull: false,
         type: Sequelize.INTEGER,

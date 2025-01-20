@@ -49,6 +49,10 @@ const mascota = sequelize.define('mascotas', {
     type: DataTypes.STRING,
     defaultValue: 'Disponible'
   },
+  especie: {
+    allowNull: false,
+    type: DataTypes.STRING
+  },
   solicitudesPendientes: {
     allowNull: false,
     type: DataTypes.INTEGER,
