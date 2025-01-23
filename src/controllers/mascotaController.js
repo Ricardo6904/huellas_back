@@ -1,6 +1,5 @@
 controller = {}
 const { Op } = require('sequelize')
-const { body, matchedData } = require('express-validator')
 const { mascotaModel } = require('../models')
 const { storageModel } = require('../models')
 const handleErrors = require('../utils/handleErrors')
@@ -17,6 +16,8 @@ controller.obtenerMascota = async (req, res) => {
         const data = await mascotaModel.findOneData(id)
         res.send({ data })
     } catch (error) {
+        console.log(error);
+        
         handleErrors(res, 'ERROR_GET_MASCOTA', 403)
     }
 }
