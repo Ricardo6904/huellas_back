@@ -16,11 +16,12 @@ app.use(express.json());
 
 //configuraciones
 app.set('port', process.env.PORT || 8080)
-app.use(cors({
-    origin: 'https://www.adoptahuellas.pet',  // Asegúrate de que esta sea la URL de tu frontend
+/* app.use(cors({
+    origin: 'https://www.adoptahuellas.pet',  
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
-}));
+})); */
+app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname,'/storage')))
 
