@@ -10,7 +10,7 @@ module.exports = {
     const hashedPsw1 = await encrypt('usuario')
 
     await queryInterface.bulkInsert('usuarios', [
-      {
+      /* {
         nombres: 'Ricardo Esteban',
         apellidos: 'Supe',
         cedula: '1805096904',
@@ -21,7 +21,7 @@ module.exports = {
         provincia: 'Tungurahua',
         ciudad: 'Ambato',
         direccion: 'Carihuayrazo y Sangay'
-      },
+      }, */
       {
         nombres: 'Marco Orlando',
         apellidos: 'Tenezaca',
@@ -32,7 +32,19 @@ module.exports = {
         rol: 'usuario',
         provincia: 'Tungurahua',
         ciudad: 'Ambato',
-        direccion: 'Carihuayrazo y Sangay'
+        direccion: 'Ambato'
+      },
+      {
+        nombres: 'Romina María',
+        apellidos: 'Sánchez Arroba',
+        cedula: '1850269364',
+        celular: '0992658073',
+        email: 'rm.sanchezarroba@gmail.com',
+        clave: hashedPsw1,
+        rol: 'usuario',
+        provincia: 'Tungurahua',
+        ciudad: 'Ambato',
+        direccion: 'Barrio La Presidencial'
       },
     ], {});
   },

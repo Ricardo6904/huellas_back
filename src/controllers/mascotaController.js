@@ -33,11 +33,8 @@ controller.obtenerMascotas = async (req, res) => {
         const { nombre, edad, raza, tamano } = req.query;
 
         let filtro = {
-            solicitudesPendientes: {
-                [Op.lt]: 3, // Filtrar mascotas con menos de 3 solicitudes pendientes
-            },
             estado: {
-                [Op.ne]: 'Adoptado'
+                [Op.ne]: 'adoptado'
             }
         };
 
