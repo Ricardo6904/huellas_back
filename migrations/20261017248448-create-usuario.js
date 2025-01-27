@@ -38,13 +38,26 @@ module.exports = {
         allowNull: false,
         type:Sequelize.STRING
       },
-      provincia:{
+      idProvincia:{
+        type:Sequelize.INTEGER,
         allowNull: false,
-        type:Sequelize.STRING
+        references: {
+          model: 'ciudades',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true
       },
-      ciudad:{
-        allowNull: false,
-        type:Sequelize.STRING
+      idCiudad:{
+        type:Sequelize.INTEGER,
+        references: {
+          model: 'provincias',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true
       },
       direccion: {
         allowNull: false,

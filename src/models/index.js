@@ -1,5 +1,3 @@
-const avistamiento = require('./avistamientos');
-
 const models = {
     usuarioModel: require('./usuarios'),
     storageModel: require('./storage'),
@@ -7,7 +5,9 @@ const models = {
     adopcionModel: require('./adopciones'),
     refugioModel: require('./refugios'),
     avistamientoModel: require('./avistamientos'),
-    mascotaPerdidaModel: require('./mascotasPerdidas')
+    mascotaPerdidaModel: require('./mascotasPerdidas'),
+    ciudadModel: require('./ciudades'),
+    provinciaModel: require('./provincias'),
 }
 
 module.exports = models;

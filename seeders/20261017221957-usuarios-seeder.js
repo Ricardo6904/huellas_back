@@ -30,8 +30,8 @@ module.exports = {
         email: 'motenezaca@gmail.com',
         clave: hashedPsw1,
         rol: 'usuario',
-        provincia: 'Tungurahua',
-        ciudad: 'Ambato',
+        idProvincia: 1,
+        idCiudad: 1,
         direccion: 'Ambato'
       },
       {
@@ -42,8 +42,8 @@ module.exports = {
         email: 'rm.sanchezarroba@gmail.com',
         clave: hashedPsw1,
         rol: 'usuario',
-        provincia: 'Tungurahua',
-        ciudad: 'Ambato',
+        idProvincia: 1,
+        idCiudad: 1,
         direccion: 'Barrio La Presidencial'
       },
     ], {});
