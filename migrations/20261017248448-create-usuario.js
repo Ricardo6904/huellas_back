@@ -20,7 +20,8 @@ module.exports = {
       },
       cedula:{
         allowNull: false,
-        type:Sequelize.STRING
+        type:Sequelize.STRING,
+        unique: true
       },
       celular: {
         allowNull: false,
@@ -28,7 +29,8 @@ module.exports = {
       },
       email:{
         allowNull: false,
-        type:Sequelize.STRING
+        type:Sequelize.STRING,
+        unique: true
       },
       clave:{
         allowNull: false,

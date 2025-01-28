@@ -34,7 +34,7 @@ controller.obtenerCiudadPorIdprovincia = async (req, res) => {
     try {
         const idProvincia = req.params.idProvincia
         
-        const data = await ciudadModel.findOne({where: {idProvincia:idProvincia}})
+        const data = await ciudadModel.findAll({where: {idProvincia:idProvincia}})
         console.log(data);
         
         res.send({data})
