@@ -44,7 +44,7 @@ module.exports = {
         type:Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'ciudades',
+          model: 'provincias',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -54,7 +54,7 @@ module.exports = {
       idCiudad:{
         type:Sequelize.INTEGER,
         references: {
-          model: 'provincias',
+          model: 'ciudades',
           key: 'id'
         },
         onUpdate: 'CASCADE',

@@ -1,6 +1,6 @@
 const handleHttpError = require('../utils/handleErrors')
 const { verifyToken } = require('../utils/handleJwt')
-const { usuarioModel } = require('../models')
+const { usuarioModel, refugioModel } = require('../models')
 
 const authMiddleware = async (req, res, next) => {
     try {
@@ -8,6 +8,7 @@ const authMiddleware = async (req, res, next) => {
             handleHttpError(res, 'NOT_TOKEN', 401)
             return
         }
+
         const token = req.headers.authorization.split(' ').pop()
         
         const dataToken = await verifyToken(token)
@@ -16,7 +17,11 @@ const authMiddleware = async (req, res, next) => {
             return
         }
 
-        const usuario = await usuarioModel.findOne({where:{idUsuario:dataToken.id}})
+        const usuario = await usuarioModel.findOne({where:{id:dataToken.id}})
+        if(!usuario){
+            const refugio = await refugioModel.findOne({where: {id:dataToken.id}})
+            req.refugio = refugio
+        }
         req.usuario = usuario
 
         next()

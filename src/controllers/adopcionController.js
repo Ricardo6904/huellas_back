@@ -52,7 +52,6 @@ controller.crearAdopcion = async (req, res) => {
                 id: req.idUsuario
             }
         })
-        console.log(req);
 
         if (usuario.adopcionPendiente === true) {
             return res.status(400).send({
@@ -66,7 +65,8 @@ controller.crearAdopcion = async (req, res) => {
             });
         }
 
-        const data = await adopcionModel.create(req)
+
+        const data = await adopcionModel.create(req);
         res.send({ data, usuario })
 
     } catch (error) {

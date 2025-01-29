@@ -5,13 +5,13 @@ const validateResults = require('../utils/handleValidators')
 validator.validatorRegistrarUsuario = [
     check('nombres').exists().notEmpty().isLength({min:2, max:45}),
     check('apellidos').exists().notEmpty().isLength({min:2, max:45}),
-    check('celular').exists().notEmpty().isLength({min:10, max:10}),
-    //check('cedula').exists(),
+    check('celular').exists().notEmpty().isLength({min:8, max:10}),
+    check('cedula').exists().notEmpty().isLength({min:10, max:10}),
     check('email').exists().notEmpty().isEmail(),
-    check('clave').exists().notEmpty().isLength({min:2, max:45}),
+    check('clave').exists().notEmpty().isLength({min:2, max:80}),
     check('rol').exists().notEmpty(),
-    check('provincia').exists().notEmpty(),
-    check('ciudad').exists().notEmpty(),
+    check('idProvincia').exists().notEmpty(),
+    check('idCiudad').exists().notEmpty(),
     check('direccion').exists().notEmpty(),
     (req, res, next) => {
         return validateResults(req, res, next)

@@ -7,15 +7,15 @@ const checkRol = require('../middleware/rol')
 
 
 //router.get('/', authMiddleware, checkRol(['admin', 'supervisor']), controller.obtenerAdopciones)
-router.get('/', controller.obtenerAdopciones)
+router.get('/', authMiddleware, controller.obtenerAdopciones)
 
 //Lista de adopciones por refugio
-router.get('/mascota/refugio/:idRefugio', controller.obtenerAdopcionPorIdRefugio)
+router.get('/mascota/refugio/:idRefugio', authMiddleware, controller.obtenerAdopcionPorIdRefugio)
 
 //router.post('/', authMiddleware, validator.validatorCrearAdopcion, controller.crearAdopcion)
-router.post('/', validator.validatorCrearAdopcion, controller.crearAdopcion)
+router.post('/', authMiddleware, validator.validatorCrearAdopcion, controller.crearAdopcion)
 
-router.put('/:id/aprobarSolicitud', controller.aprobarSolicitud)
-router.put('/:id/rechazarSolicitud', controller.rechazarSolicitud)
+router.put('/:id/aprobarSolicitud', authMiddleware, controller.aprobarSolicitud)
+router.put('/:id/rechazarSolicitud', authMiddleware, controller.rechazarSolicitud)
 
 module.exports = router

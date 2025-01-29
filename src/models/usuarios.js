@@ -51,10 +51,10 @@ const Usuario = sequelize.define('usuarios', {
   estado: {
     allowNull: false,
     type: DataTypes.STRING,
-    defaultValue: 'ACTIVO'
+    defaultValue: 'activo'
   },
   adopcionPendiente: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.BOOLEAN,
     defaultValue: 0
   }
@@ -63,11 +63,5 @@ const Usuario = sequelize.define('usuarios', {
   timestamps: false // Si no tienes campos de timestamp (createdAt, updatedAt)
 });
 
-Usuario.belongsTo(Provincias,{
-   foreignKey: 'idProvincia' 
-  });
-Usuario.belongsTo(Ciudades,{
-   foreignKey: 'idCiudad' 
-  });
 
 module.exports = Usuario;

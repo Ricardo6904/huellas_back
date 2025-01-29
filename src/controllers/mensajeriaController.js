@@ -132,5 +132,11 @@ controller.solicitudRechazada = async (req, res) => {
     }
 };
 
+controller.enviarVerificacionEmail = async (email, token) => {
+    //const { email, token } = req.body;
+    const verificacionlink = `/verify-email?token=${token}`;
+    await emailService.sendEmail(email, 'Verificación de Correo', `Por favor da click en el siguiente enlace para verificar tu correo: ${verificacionlink}`)
+}
+
 
 module.exports = controller

@@ -7,6 +7,7 @@ module.exports = {
       { id: 1, nombre: 'Azuay' },
       { id: 2, nombre: 'Pichincha' },
       { id: 3, nombre: 'Guayas' },
+      { id: 4, nombre: 'Tungurahua' },
       // Agrega más provincias aquí
     ], {});
   },

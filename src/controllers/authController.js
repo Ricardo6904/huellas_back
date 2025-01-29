@@ -4,6 +4,8 @@ const { tokenSign, tokenSignRefugio } = require('../utils/handleJwt')
 const { usuarioModel } = require('../models')
 const { refugioModel } = require('../models')
 const handleHttpError = require('../utils/handleErrors')
+const jwt = require('jsonwebtoken')
+const mensajeriaController = require('./mensajeriaController')
 
 controller = {}
 
@@ -15,8 +17,20 @@ controller = {}
 controller.register = async (req, res) => {
     try {
         req = matchedData(req)
-        console.log(req);
-        
+
+        //token
+        //const token = jwt.sign({email: req.email}, 'secret', { expiresIn: '1h' })
+        const usuarioExistente = await usuarioModel.findOne({
+            where: {
+                cedula: req.cedula,
+                email: req.email
+            }
+        });
+
+
+        if (usuarioExistente) {
+            res.status(400).send({ message: 'Correo o Cédula ya registrados' })
+        }
         const clave = await encrypt(req.clave)
         const body = { ...req, clave }
         const dataUsuario = await usuarioModel.create(body)
@@ -27,8 +41,12 @@ controller.register = async (req, res) => {
             usuario: dataUsuario
         }
 
-        res.send({ data })
+        mensajeriaController.enviarVerificacionEmail(req.email, data.token)
+
+        res.send({ data, message: 'Usuario registrado. Por favor, verifica tu correo.' })
     } catch (error) {
+        console.log(error);
+
         handleHttpError(res, 'ERROR_REGISTER_USUARIO', 403)
     }
 
@@ -40,15 +58,15 @@ controller.registerRefugio = async (req, res) => {
         const clave = await encrypt(req.clave)
         const body = { ...req, clave }
         const dataRefugio = await refugioModel.create(body)
-        
-        
+
+
         dataRefugio.set('claveRefugio', undefined, { strict: false })
 
         const data = {
             token: await tokenSignRefugio(dataRefugio),
             usuario: dataRefugio
         }
-        
+
         res.send({ data })
     } catch (error) {
         handleHttpError(res, 'ERROR_REGISTER_REFUGIO', 403)
@@ -100,7 +118,7 @@ controller.login = async (req, res) => {
     try {
         req = matchedData(req)
         console.log(req);
-        
+
         const { email, clave } = req;
 
         // Primero, busca en la tabla de usuarios
@@ -120,7 +138,7 @@ controller.login = async (req, res) => {
             user.set('clave', undefined, { strict: false });
             const token = await tokenSign(user.toJSON());
 
-            
+
             return res.send({ token, user, rol: 'usuario' });
 
         } else {
@@ -157,7 +175,7 @@ controller.login = async (req, res) => {
 controller.loginRefugio = async (req, res) => {
     try {
         req = matchedData(req)
-        
+
         const refugio = await refugioModel.findOne({
             where: { email: req.email },
             attributes: ['id', 'clave', 'nombre', 'rol', 'email']
@@ -165,25 +183,25 @@ controller.loginRefugio = async (req, res) => {
         if (!refugio) {
             handleHttpError(res, 'REFUGIO_NOT_EXIST', 404)
             return
-            
+
         }
         const hashPassword = refugio.get('clave')
         const check = await compare(req.clave, hashPassword)
 
-        if(!check){
+        if (!check) {
             handleHttpError(res, 'INVALID PASSWORD', 401)
             return
         }
 
-        refugio.set('clave', undefined, { strict:false })
+        refugio.set('clave', undefined, { strict: false })
 
         const refugioData = refugio.toJSON()
         const data = {
-            token: await tokenSign(refugioData),
+            token: await tokenSignRefugio(refugioData),
             refugio
         }
 
-        res.send({data})
+        res.send({ data })
     } catch (error) {
         handleHttpError(res, 'ERROR_LOGIN_REFUGIO', 403)
     }
