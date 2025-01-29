@@ -3,9 +3,9 @@ const router = express.Router()
 const mascotaController = require('../controllers/mascotaController')
 const authMiddleware = require('../middleware/session')
 
-router.get('/', authMiddleware, mascotaController.obtenerMascotas)
+router.get('/', mascotaController.obtenerMascotas)
 
-router.get('/:id', authMiddleware, mascotaController.obtenerMascota)
+router.get('/:id', mascotaController.obtenerMascota)
 
 router.get('/refugio/:idRefugio', authMiddleware, mascotaController.obtenerMascotasPorIdFundacion)
 
