@@ -18,13 +18,26 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      ciudad: {
+      idProvincia:{
+        type:Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.STRING
+        references: {
+          model: 'provincias',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true
       },
-      provincia: {
-        allowNull: false,
-        type: Sequelize.STRING
+      idCiudad:{
+        type:Sequelize.INTEGER,
+        references: {
+          model: 'ciudades',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true
       },
       celular: {
         allowNull: false,
@@ -32,7 +45,11 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true,
+        validate: {
+          isEmail: true
+        }
       },
       rol: {
         allowNull: false,
@@ -45,6 +62,19 @@ module.exports = {
       redesSociales:{
         allowNull: true,
         type: Sequelize.JSON
+      },
+      descripcion:{
+        allowNull: true,
+        type: Sequelize.TEXT
+      },
+      horarioAtencion:{
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      estado:{
+        allowNull:false,
+        type: Sequelize.STRING,
+        defaultValue:'pendiente'
       },
       idStorage: {
         type: Sequelize.INTEGER,

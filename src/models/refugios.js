@@ -1,5 +1,5 @@
 const { sequelize } = require('../config/mysql')
-const { DataTypes } = require('sequelize')
+const { DataTypes, Sequelize } = require('sequelize')
 const Storage = require('./storage')
 
 const refugio = sequelize.define('refugios', {
@@ -15,11 +15,19 @@ const refugio = sequelize.define('refugios', {
     direccion: {
         type: DataTypes.STRING
     },
-    ciudad: {
-        type: DataTypes.STRING
+    idProvincia: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'provincias',
+            key: 'id'
+        }
     },
-    provincia: {
-        type: DataTypes.STRING
+    idCiudad: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'ciudades',
+            key: 'id'
+        }
     },
     celular: {
         type: DataTypes.STRING
@@ -32,11 +40,24 @@ const refugio = sequelize.define('refugios', {
         select: false
     },
     rol: {
-        type: DataTypes.ENUM(["refugio", "administrador"]),
+        type: DataTypes.ENUM(["refugio", "admin"]),
     },
     redesSociales: {
         type: DataTypes.JSON,
         allowNull: true,
+    },
+    descripcion:{
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    horarioAtencion:{
+        type:Sequelize.STRING,
+        allowNull: true
+    },
+    estado:{
+        type:Sequelize.STRING,
+        allowNull:false,
+        defaultValue: 'pendiente'
     }
 }, {
     tableName: 'refugios',

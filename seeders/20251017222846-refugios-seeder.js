@@ -7,27 +7,30 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     
     const hashedPassword = await encrypt('refugio');
+    const hashedMacarenaPassword = await encrypt('Patitasnobles.adoptahuellas@');
 
     await queryInterface.bulkInsert('refugios', [
       {
-        nombre: 'Refugio San Francisco',
-        direccion: 'Av. Central 456',
-        ciudad: 'Ambato',
-        provincia: 'Tungurahua',
-        celular: '0987654321',
+        nombre: 'Administrador',
+        direccion: 'admin',
+        idCiudad: 6,
+        idProvincia: 4,
+        celular: '0983041387',
         email: 'mnzioss@gmail.com',
         rol: 'admin',
+        estado: 'activo',
         clave: hashedPassword,
       },
       {
-        nombre: 'Refugio Esperanza',
-        direccion: 'Calle Esperanza 123',
-        ciudad: 'Quito',
-        provincia: 'Pichincha',
-        celular: '0976543210',
-        email: 'motenezaca1@gmail.com',
+        nombre: 'Patitas Nobles',
+        direccion: 'Jácome Clavijo y Av. Victor Hugo',
+        idCiudad: 6,
+        idProvincia: 4,
+        celular: '0969015885',
+        email: 'papitasnobles.adoptahuellas@gmail.com',
         rol: 'refugio',
-        clave: hashedPassword
+        estado: 'activo',
+        clave: hashedMacarenaPassword,
       }
     ], {});
   },
