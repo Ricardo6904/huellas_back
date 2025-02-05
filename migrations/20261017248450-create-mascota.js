@@ -33,15 +33,15 @@ module.exports = {
         type: Sequelize.STRING
       },
       historia: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       caracteristica: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       condicion: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       idStorage: {
@@ -55,7 +55,7 @@ module.exports = {
         allowNull: true
       },
       esEsterilizado: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.BOOLEAN
       },
       idRefugio: {

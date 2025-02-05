@@ -50,4 +50,7 @@ const verifyToken = async (tokenJwt) => {
     }
 }
 
+
+  
+
 module.exports = { tokenSign, tokenSignRefugio, verifyToken}

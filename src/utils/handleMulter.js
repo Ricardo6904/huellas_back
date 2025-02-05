@@ -32,6 +32,14 @@ const upload = multer({
         },
     }),
     limits: { fileSize: 300 * 1024 * 1024 }, // Límite de 300 MB
+    fileFilter: (req, file, cb) => {
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (allowedMimeTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Solo se permiten archivos de imagen (JPEG, PNG, GIF, WEBP)'), false);
+        }
+    }
 });
 
 module.exports = upload;

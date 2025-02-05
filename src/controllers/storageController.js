@@ -13,18 +13,6 @@ controller.obtenerStorages = async (req, res) => {
 }
 
 
-/* controller.crearStorage = async (req, res) => {
-    const { body, file } = req
-    console.log(file);
-    const fileData = {
-        id: 0,
-        filename: file.filename,
-        url: `${PUBLIC_URL}/${file.filename}`
-    }
-    const data = await storageModel.create(fileData)
-    res.send({data})
-} */
-
 // Subir archivo a Cloudflare R2 y guardarlo en la base de datos
 controller.crearStorage = async (req, res) => {
     try {
@@ -61,27 +49,7 @@ controller.obtenerStoragePorId = async (req, res) => {
     res.send({ data })
 }
 
-/* controller.eliminarStorage = async (req, res) => {
-    try {
-        const id = req.params.id
-        const dataFile = await storageModel.findByPk(id)
-        const { filename } = dataFile
 
-        const filePath = `${MEDIA_PATH}/${filename}`
-
-        fs.unlinkSync(filePath)
-
-        const data = {
-            filePath,
-            deleted: 1
-        }
-        res.send({ data })
-    } catch (error) {
-        console.log(error);
-
-        handleErrors(res, 'ERROR_DELETE_STORAGE', 403)
-    }
-} */
 controller.eliminarStorage = async (req, res) => {
     try {
         const id = req.params.id;
@@ -96,7 +64,7 @@ controller.eliminarStorage = async (req, res) => {
 
         // Elimina la imagen de Cloudflare R2
         await s3.deleteObject({
-            Bucket: BUCKET_NAME,
+            Bucket: 'adoptahuellas',
             Key: fileKey,
         }).promise();
 
