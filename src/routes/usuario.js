@@ -11,7 +11,7 @@ router.get('/', authMiddleware, usuarioController.obtenerUsuarios)
 
 router.post('/', validatorCrearUsuario, usuarioController.crearUsuario)
 
-router.get('/:idUsuario', authMiddleware, usuarioController.obtenerUsuario)
+router.get('/:idUsuario', usuarioController.obtenerUsuario)
 
 router.put('/:idUsuario', authMiddleware, usuarioController.actualizarUsuario)
 

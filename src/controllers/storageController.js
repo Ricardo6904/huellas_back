@@ -2,6 +2,16 @@ const controller = {}
 const fs = require('fs')
 const { storageModel } = require('../models')
 const handleErrors = require('../utils/handleErrors')
+const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+
+const s3 = new S3Client({
+    endpoint: 'https://a65d7916a6d267b383c5d1513c500c3a.r2.cloudflarestorage.com',
+    region: 'auto',
+    credentials: {
+        accessKeyId: process.env.R2_ACCESS_KEY_ID,
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+    },
+});
 
 const PUBLIC_URL = process.env.PUBLIC_URL
 const MEDIA_PATH = `${__dirname}/../storage`
@@ -52,7 +62,9 @@ controller.obtenerStoragePorId = async (req, res) => {
 
 controller.eliminarStorage = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.params.idStorage;
+        console.log(req.params);
+        
         const dataFile = await storageModel.findByPk(id);
 
         if (!dataFile) {
@@ -63,10 +75,10 @@ controller.eliminarStorage = async (req, res) => {
         const fileKey = dataFile.url.replace(`${R2_PUBLIC_URL}/`, '');
 
         // Elimina la imagen de Cloudflare R2
-        await s3.deleteObject({
+        await s3.send(new DeleteObjectCommand({
             Bucket: 'adoptahuellas',
             Key: fileKey,
-        }).promise();
+        }));
 
         // Elimina la referencia en la base de datos
         await storageModel.destroy({ where: { id } });
