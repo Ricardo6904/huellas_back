@@ -27,7 +27,7 @@ module.exports = {
         idCiudad: 6,
         idProvincia: 4,
         celular: '0969015885',
-        email: 'papitasnobles.adoptahuellas@gmail.com',
+        email: 'patitasnobles.adoptahuellas@gmail.com',
         rol: 'refugio',
         estado: 'activo',
         clave: hashedMacarenaPassword,
