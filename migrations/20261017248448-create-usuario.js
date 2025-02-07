@@ -77,6 +77,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      verificado: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false // Por defecto, el usuario no está verificado
       }
     })
   },

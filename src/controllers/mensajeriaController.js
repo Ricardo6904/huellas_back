@@ -132,11 +132,14 @@ controller.solicitudRechazada = async (req, res) => {
     }
 };
 
-controller.enviarVerificacionEmail = async (email, token) => {
+controller.enviarVerificacionEmail = async (email, verificacionlink) => {
     //const { email, token } = req.body;
-    const verificacionlink = `/verify-email?token=${token}`;
-    await emailService.sendEmail(email, 'Verificación de Correo', `Por favor da click en el siguiente enlace para verificar tu correo: ${verificacionlink}`)
+    await emailService.sendEmail(email, 'Verificación de correo' ,'Verificación de Correo', `<p>Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico:</p><a href="${verificationLink}">${verificationLink}</a>`)
 }
 
-
+controller.recuperarContrasena = async(email, clave) => {
+    const mensaje = `<p>Su nueva contraseña es: ${clave}<p/><br>
+    <p>El equipo de <strong>Adopta Huellas</strong></p>`
+    await emailService.sendEmail(email, 'Contraseña olvidada', mensaje)
+}
 module.exports = controller

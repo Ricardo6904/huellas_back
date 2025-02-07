@@ -1,6 +1,7 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
-const Storage = require('./storage')
+const Storage = require('./storage');
+const provincia = require('./provincias');
 
 const ciudad = sequelize.define('ciudades', {
     id: {
@@ -24,5 +25,7 @@ const ciudad = sequelize.define('ciudades', {
       tableName: 'ciudades',
       timestamps: false
 })
+
+ciudad.belongsTo(provincia, { foreignKey: 'idProvincia', as: 'provincia' });
 
 module.exports = ciudad;

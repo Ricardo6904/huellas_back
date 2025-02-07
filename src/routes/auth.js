@@ -9,7 +9,10 @@ router.post('/login', validator.validatorLogin, authController.login)
 
 router.post('/registerRefugio', validator.validatorRegistrarRefugio, authController.registerRefugio)
 
-router.post('/loginRefugio', validator.validatorLoginRefugio,authController.loginRefugio)
+router.post('/loginRefugio', validator.validatorLoginRefugio, authController.loginRefugio)
 
+router.get('/verify-email', authController.verificarCorreo)
+
+router.post('/recuperarContrasena', authController.recuperarContrasena)
 
 module.exports = router

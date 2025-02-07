@@ -32,16 +32,18 @@ controller.register = async (req, res) => {
             res.status(400).send({ message: 'Correo o Cédula ya registrados' })
         }
         const clave = await encrypt(req.clave)
-        const body = { ...req, clave }
+        const body = { ...req, clave, verificado: false }
         const dataUsuario = await usuarioModel.create(body)
-        dataUsuario.set('claveUsuario', undefined, { strict: false })
+        dataUsuario.set('clave', undefined, { strict: false })
 
         const data = {
             token: await tokenSign(dataUsuario),
             usuario: dataUsuario
         }
 
-        mensajeriaController.enviarVerificacionEmail(req.email, data.token)
+        const verificationlink = `https://app.adoptahuellas.pet/auth/verify-email?token=${data.token}`
+
+        mensajeriaController.enviarVerificacionEmail(req.email, verificationlink)
 
         res.send({ data, message: 'Usuario registrado. Por favor, verifica tu correo.' })
     } catch (error) {
@@ -206,5 +208,73 @@ controller.loginRefugio = async (req, res) => {
         handleHttpError(res, 'ERROR_LOGIN_REFUGIO', 403)
     }
 }
+
+controller.recuperarContrasena = async(req,res) =>{
+    try {
+        const email = req.body.email
+        const usuario = await usuarioModel.findOne({
+            where: { email: email }
+        })
+        
+        if(!usuario){
+            handleHttpError(res, 'INVALID EMAIL', 401)
+            return 
+        }
+        
+        // Generar una nueva contraseña de 7 caracteres
+        const nuevaContrasena = generarContrasenaAleatoria(7);
+
+        // Encriptar la nueva contraseña
+        const claveEncriptada = await encrypt(nuevaContrasena);
+
+        await usuarioModel.update(
+            { clave: claveEncriptada },
+            { where: { email: email } }
+        );
+
+        mensajeriaController.recuperarContrasena(email, nuevaContrasena)
+    
+        res.send({message:'Contraseña recuperada con éxito'})
+        
+    } catch (error) {        
+        res.status(500).send({ message: 'Error al reenviar contraseña' });
+    }
+}
+
+controller.verificarCorreo = async (req, res) => {
+    try {
+        const { token } = req.query;
+
+        if (!token) {
+            return res.status(400).send({ message: 'Token no proporcionado' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Asegúrate de usar la misma clave secreta que usaste para firmar el token
+        const usuario = await usuarioModel.findByPk(decoded.id);
+
+        if (!usuario) {
+            return res.status(404).send({ message: 'Usuario no encontrado' });
+        }
+
+        usuario.verificado = true;
+        await usuario.save();
+
+        res.send({ message: 'Correo electrónico verificado con éxito' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: 'Error al verificar el correo electrónico' });
+    }
+}
+
+const generarContrasenaAleatoria = (longitud) => {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let contrasena = '';
+    for (let i = 0; i < longitud; i++) {
+        const indice = Math.floor(Math.random() * caracteres.length);
+        contrasena += caracteres.charAt(indice);
+    }
+    return contrasena;
+};
+
 
 module.exports = controller

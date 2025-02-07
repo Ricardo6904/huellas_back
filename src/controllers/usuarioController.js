@@ -30,12 +30,15 @@ controller.crearUsuario = async (req, res) => {
 
 controller.obtenerUsuario = async (req, res) => {
     try {
-        const idUsuario = req.params.idUsuario
-        const data = await usuarioModel.findByPk(idUsuario, {
+        const id = req.params.idUsuario
+       /*  const data = await usuarioModel.findByPk(id, {
             attributes: { exclude: ['clave'] }
-        })
+        }) */
+        const data = await usuarioModel.findOneData(id) 
         res.send({data})
     } catch (error) {
+        console.log(error);
+        
         handleHttpError(res, 'ERROR_GET_USUARIO', 403)
     }
 }
@@ -52,12 +55,17 @@ controller.eliminarUsuario = async (req, res) => {
 
 controller.actualizarUsuario = async (req,res) => {
     try {
-        const {idUsuario, ...body} = req.body
-        const [rows] = await usuarioModel.update(body, {where:{idUsuario}});
+        const { idUsuario } = req.params
+        const body = req.body
+       console.log('idusuario', idUsuario);
+       
+        
+        const [rows] = await usuarioModel.update(body, {where: {id:idUsuario}});
         if(rows === 0) return handleHttpError(res, 'USUARIO_NOT_FOUND', 404)
         const data = await usuarioModel.findByPk(idUsuario)
         res.send({data})
     } catch (error) {
+        console.log(error);
         handleHttpError(res, 'ERROR_UPDATE_USUARIO', 403)
     }
 }
