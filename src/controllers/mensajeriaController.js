@@ -133,8 +133,12 @@ controller.solicitudRechazada = async (req, res) => {
 };
 
 controller.enviarVerificacionEmail = async (email, verificacionlink) => {
-    //const { email, token } = req.body;
-    await emailService.sendEmail(email, 'Verificación de correo' ,'Verificación de Correo', `<p>Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico:</p><a href="${verificationLink}">${verificationLink}</a>`)
+    try {
+        await emailService.sendEmail(email, 'Verificación de correo' ,'Verificación de Correo', `<p>Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico:</p><a href="${verificacionlink}">${verificacionlink}</a>`)
+    } catch (error) {
+    console.log(error);
+            
+    }
 }
 
 controller.recuperarContrasena = async(email, clave) => {
