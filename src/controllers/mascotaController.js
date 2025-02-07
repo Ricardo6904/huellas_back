@@ -34,7 +34,7 @@ controller.obtenerMascotas = async (req, res) => {
 
         let filtro = {
             estado: {
-                [Op.ne]: 'adoptado'
+                [Op.notIn]: ['adoptado','pendiente']
             }
         };
 

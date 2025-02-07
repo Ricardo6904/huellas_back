@@ -5,7 +5,9 @@ const handleHttpError = require('../utils/handleErrors')
 
 controller.obtenerUsuarios = async (req, res) => {
     try {
-        const data = await usuarioModel.findAll({})
+        const data = await usuarioModel.findAll({
+            attributes: { exclude: ['clave'] }
+        })
         res.send({ data })
         
     } catch (error) {
@@ -29,7 +31,9 @@ controller.crearUsuario = async (req, res) => {
 controller.obtenerUsuario = async (req, res) => {
     try {
         const idUsuario = req.params.idUsuario
-        const data = await usuarioModel.findByPk(idUsuario)
+        const data = await usuarioModel.findByPk(idUsuario, {
+            attributes: { exclude: ['clave'] }
+        })
         res.send({data})
     } catch (error) {
         handleHttpError(res, 'ERROR_GET_USUARIO', 403)

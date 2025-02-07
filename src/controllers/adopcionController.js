@@ -65,6 +65,11 @@ controller.crearAdopcion = async (req, res) => {
             });
         }
 
+        await mascotaModel.update(
+            { estado: 'pendiente' }, // Cambiar el estado
+            { where: { id: req.idMascota } } // Mascota correspondiente
+        );
+
 
         const data = await adopcionModel.create(req);
         res.send({ data, usuario })
@@ -88,16 +93,26 @@ controller.aprobarSolicitud = async (req, res) => {
             }
         })
 
-        if (mascota.estado !== 'disponible') {
+        const usuario = await usuarioModel.findOne({
+            where: { id: adopcion.idUsuario }
+        });
+
+        if (!mascota) {
             return res.status(400).send({
-                message: "Mascota no disponible",
+                message: "Mascota no encontrada",
             });
+        }
+
+        if (!usuario) {
+            return res.status(404).send({ message: "Usuario no encontrado" });
         }
 
         adopcion.estado = 'aprobado'
         mascota.estado = 'adoptado'
-        await mascota.save()
-        await adopcion.save()
+        usuario.adopcionPendiente = !usuario.adopcionPendiente;
+
+        await Promise.all([mascota.save(), adopcion.save(), usuario.save()]);
+        
         res.send({ adopcion })
 
     } catch (error) {
@@ -119,18 +134,27 @@ controller.rechazarSolicitud = async (req, res) => {
             }
         })
 
-        console.log(mascota);
-        
-        if (mascota.estado !== 'disponible') {
+        const usuario = await usuarioModel.findOne({
+            where: { id: adopcion.idUsuario }
+        });
+
+        if (!mascota) {
             return res.status(400).send({
-                message: "Mascota no disponible",
+                message: "Mascota no encontrada",
             });
         }
 
+        if (!usuario) {
+            return res.status(404).send({ message: "Usuario no encontrado" });
+        }
+
+
         adopcion.estado = 'rechazado'
         mascota.estado = 'disponible'
-        await mascota.save()
-        await adopcion.save()
+        usuario.adopcionPendiente = !usuario.adopcionPendiente;
+
+        await Promise.all([mascota.save(), adopcion.save(), usuario.save()]);
+
         res.send({ adopcion })
 
     } catch (error) {
