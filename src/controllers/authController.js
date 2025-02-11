@@ -41,7 +41,7 @@ controller.register = async (req, res) => {
             usuario: dataUsuario
         }
 
-        const verificationlink = `https://app.adoptahuellas.pet/auth/verify-email?token=${data.token}`
+        const verificationlink = `https://app.adoptahuellas.pet/api/auth/verify-email?token=${data.token}`
 
         mensajeriaController.enviarVerificacionEmail(req.email, verificationlink)
 
@@ -252,6 +252,9 @@ controller.verificarCorreo = async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Asegúrate de usar la misma clave secreta que usaste para firmar el token
         const usuario = await usuarioModel.findByPk(decoded.id);
 
+        // Enviar el token al frontend con el estado de verificación
+        const authToken = jwt.sign({ id: usuario.id, verificado: usuario.verificado }, process.env.JWT_SECRET);
+
         if (!usuario) {
             return res.status(404).send({ message: 'Usuario no encontrado' });
         }
@@ -259,7 +262,11 @@ controller.verificarCorreo = async (req, res) => {
         usuario.verificado = true;
         await usuario.save();
 
-        res.send({ message: 'Correo electrónico verificado con éxito' });
+        // Redirigir a la página de Angular
+        res.redirect(`https://www.adoptahuellas.pet/verification-success?token=${authToken}`); // Cambia la URL según tu entorno
+        //res.send({ message: 'Correo electrónico verificado con éxito' });
+
+  
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: 'Error al verificar el correo electrónico' });
