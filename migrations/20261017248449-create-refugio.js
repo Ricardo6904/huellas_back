@@ -59,10 +59,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      redesSociales:{
-        allowNull: true,
-        type: Sequelize.JSON
-      },
       descripcion:{
         allowNull: true,
         type: Sequelize.TEXT
@@ -84,6 +80,10 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
+        allowNull: true
+      },
+      mapaUrl: {
+        type:Sequelize.TEXT,
         allowNull: true
       }
     });

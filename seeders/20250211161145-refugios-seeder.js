@@ -6,22 +6,11 @@ const { encrypt } = require('../src/utils/handlePassword');
 module.exports = {
   async up (queryInterface, Sequelize) {
     
-    const hashedPassword = await encrypt('refugio');
     const hashedMacarenaPassword = await encrypt('Patitasnobles.adoptahuellas@');
 
     await queryInterface.bulkInsert('refugios', [
       {
-        nombre: 'Administrador',
-        direccion: 'admin',
-        idCiudad: 6,
-        idProvincia: 4,
-        celular: '0983041387',
-        email: 'mnzioss@gmail.com',
-        rol: 'admin',
-        estado: 'activo',
-        clave: hashedPassword,
-      },
-      {
+        id: 1,
         nombre: 'Patitas Nobles',
         direccion: 'Jácome Clavijo y Av. Victor Hugo',
         idCiudad: 6,

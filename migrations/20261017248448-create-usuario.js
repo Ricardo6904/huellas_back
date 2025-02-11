@@ -82,7 +82,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false // Por defecto, el usuario no está verificado
-      }
+      },
+      idStorage: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'storage',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true
+      },
     })
   },
 

@@ -1,6 +1,7 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes, Sequelize } = require('sequelize')
 const Storage = require('./storage')
+const RedSocial = require('./redesSociales');
 
 const refugio = sequelize.define('refugios', {
     id: {
@@ -42,23 +43,33 @@ const refugio = sequelize.define('refugios', {
     rol: {
         type: DataTypes.ENUM(["refugio", "admin"]),
     },
-    redesSociales: {
-        type: DataTypes.JSON,
-        allowNull: true,
-    },
-    descripcion:{
+    descripcion: {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    horarioAtencion:{
-        type:Sequelize.STRING,
+    horarioAtencion: {
+        type: DataTypes.STRING,
         allowNull: true
     },
-    estado:{
-        type:Sequelize.STRING,
-        allowNull:false,
+    estado: {
+        type: DataTypes.STRING,
+        allowNull: false,
         defaultValue: 'pendiente'
-    }
+    },
+    mapaUrl: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    idStorage: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'storage',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true
+    },
 }, {
     tableName: 'refugios',
     timestamps: false
@@ -68,11 +79,25 @@ refugio.belongsTo(Storage, {
     foreignKey: 'idStorage',
 });
 
+refugio.hasMany(RedSocial, {
+    foreignKey: 'idRefugio',
+    as: 'redesSociales' // Alias para la relación
+});
+
 refugio.findOneData = function (idRefugio) {
-    refugio.belongsTo(Storage, {
-        foreignKey: 'idStorage'
-    })
-    return refugio.findOne({ where: { id: idRefugio }, include: Storage })
-}
+    return refugio.findOne({
+        where: { id: idRefugio },
+        include: [
+            {
+                model: Storage,
+                as: 'Storage' // Alias para la relación con Storage
+            },
+            {
+                model: RedSocial,
+                as: 'redesSociales' // Alias para la relación con redes sociales
+            }
+        ]
+    });
+};
 
 module.exports = refugio;

@@ -8,6 +8,7 @@ const models = {
     mascotaPerdidaModel: require('./mascotasPerdidas'),
     ciudadModel: require('./ciudades'),
     provinciaModel: require('./provincias'),
+    redesSocialesModel: require('./redesSociales')
 }
 
 module.exports = models;

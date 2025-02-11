@@ -61,14 +61,24 @@ const Usuario = sequelize.define('usuarios', {
   verificado: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
-    defaultValue: false // Por defecto, el usuario no está verificado
-  }
+    defaultValue: false
+  },
+  idStorage: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'storage',
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+    allowNull: true
+  },
 }, {
-  tableName: 'usuarios', // El nombre de la tabla en la base de datos
-  timestamps: false // Si no tienes campos de timestamp (createdAt, updatedAt)
+  tableName: 'usuarios',
+  timestamps: false
 });
 
-Usuario.belongsTo(Provincias, { foreignKey: 'idProvincia', as: 'ciudad'});
+Usuario.belongsTo(Provincias, { foreignKey: 'idProvincia', as: 'ciudad' });
 Usuario.belongsTo(Ciudades, { foreignKey: 'idCiudad', as: 'provincia' });
 
 Usuario.findOneData = function (idUsuario) {

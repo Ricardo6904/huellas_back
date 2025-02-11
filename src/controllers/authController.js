@@ -119,7 +119,6 @@ controller.registerRefugio = async (req, res) => {
 controller.login = async (req, res) => {
     try {
         req = matchedData(req)
-        console.log(req);
 
         const { email, clave } = req;
 
