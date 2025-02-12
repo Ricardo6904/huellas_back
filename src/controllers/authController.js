@@ -261,8 +261,10 @@ controller.verificarCorreo = async (req, res) => {
         usuario.verificado = true;
         await usuario.save();
 
+        const encodedToken = encodeURIComponent(authToken);
+
         // Redirigir a la página de Angular
-        res.redirect(`https://www.adoptahuellas.pet/verification-success?token=${authToken}`); // Cambia la URL según tu entorno
+        res.redirect(`https://www.adoptahuellas.pet/verification-success?token=${encodedToken}`); // Cambia la URL según tu entorno
         //res.send({ message: 'Correo electrónico verificado con éxito' });
 
   
