@@ -132,9 +132,9 @@ controller.solicitudRechazada = async (req, res) => {
     }
 };
 
-controller.enviarVerificacionEmail = async (email, verificacionlink) => {
+controller.enviarVerificacionEmail = async (email, codigoVerificacion) => {
     try {
-        await emailService.sendEmail(email, 'Verificación de correo', `<p>Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico:</p><a href="${verificacionlink}">${verificacionlink}</a>`)
+        await emailService.sendEmail(email, 'Código de verificación', `<p>Tu código de verificación es:</p><strong>${codigoVerificacion}</strong>`)
     } catch (error) {
     console.log(error);
             

@@ -73,6 +73,18 @@ const Usuario = sequelize.define('usuarios', {
     onDelete: 'SET NULL',
     allowNull: true
   },
+  infoAdicional: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+  codigoVerificacion: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  fechaExpiracionCodigo: {
+    type: DataTypes.DATE,
+    allowNull: true
+  }
 }, {
   tableName: 'usuarios',
   timestamps: false

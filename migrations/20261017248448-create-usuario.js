@@ -2,49 +2,49 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('usuarios',{
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('usuarios', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nombres:{
+      nombres: {
         allowNull: false,
-        type:Sequelize.STRING
+        type: Sequelize.STRING
       },
-      apellidos:{
+      apellidos: {
         allowNull: false,
-        type:Sequelize.STRING
+        type: Sequelize.STRING
       },
-      cedula:{
+      cedula: {
         allowNull: false,
-        type:Sequelize.STRING,
+        type: Sequelize.STRING,
         unique: true
       },
       celular: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      email:{
+      email: {
         allowNull: false,
-        type:Sequelize.STRING,
+        type: Sequelize.STRING,
         unique: true,
-        validate:{
+        validate: {
           isEmail: true
         }
       },
-      clave:{
+      clave: {
         allowNull: false,
-        type:Sequelize.STRING
+        type: Sequelize.STRING
       },
-      rol:{
+      rol: {
         allowNull: false,
-        type:Sequelize.STRING
+        type: Sequelize.STRING
       },
-      idProvincia:{
-        type:Sequelize.INTEGER,
+      idProvincia: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'provincias',
@@ -54,8 +54,8 @@ module.exports = {
         onDelete: 'SET NULL',
         allowNull: true
       },
-      idCiudad:{
-        type:Sequelize.INTEGER,
+      idCiudad: {
+        type: Sequelize.INTEGER,
         references: {
           model: 'ciudades',
           key: 'id'
@@ -66,7 +66,7 @@ module.exports = {
       },
       direccion: {
         allowNull: false,
-        type:Sequelize.STRING
+        type: Sequelize.STRING
       },
       estado: {
         allowNull: false,
@@ -93,10 +93,22 @@ module.exports = {
         onDelete: 'SET NULL',
         allowNull: true
       },
+      infoAdicional: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
+      codigoVerificacion: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      fechaExpiracionCodigo: {
+        type: Sequelize.DATE,
+        allowNull: true
+      }
     })
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('usuarios');
   }
 };

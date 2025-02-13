@@ -13,6 +13,10 @@ router.post('/loginRefugio', validator.validatorLoginRefugio, authController.log
 
 router.get('/verify-email', authController.verificarCorreo)
 
+router.post('/verify-code', authController.verificarCodigo);
+
 router.post('/recuperarContrasena', authController.recuperarContrasena)
+
+router.post('/resend-code', authController.resendCode)
 
 module.exports = router

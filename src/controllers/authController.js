@@ -18,8 +18,10 @@ controller.register = async (req, res) => {
     try {
         req = matchedData(req)
 
-        //token
-        //const token = jwt.sign({email: req.email}, 'secret', { expiresIn: '1h' })
+        const codigoVerificacion = generarCodigoVerificacion();
+        const fechaExpiracion = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos de expiración
+
+
         const usuarioExistente = await usuarioModel.findOne({
             where: {
                 cedula: req.cedula,
@@ -31,8 +33,12 @@ controller.register = async (req, res) => {
         if (usuarioExistente) {
             res.status(400).send({ message: 'Correo o Cédula ya registrados' })
         }
+
         const clave = await encrypt(req.clave)
-        const body = { ...req, clave, verificado: false }
+        const body = {
+            ...req, clave, verificado: false, codigoVerificacion,
+            fechaExpiracionCodigo: fechaExpiracion,
+        }
         const dataUsuario = await usuarioModel.create(body)
         dataUsuario.set('clave', undefined, { strict: false })
 
@@ -41,11 +47,10 @@ controller.register = async (req, res) => {
             usuario: dataUsuario
         }
 
-        const verificationlink = `https://app.adoptahuellas.pet/api/auth/verify-email?token=${data.token}`
 
-        mensajeriaController.enviarVerificacionEmail(req.email, verificationlink)
+        await mensajeriaController.enviarVerificacionEmail(req.email, codigoVerificacion)
 
-        res.send({ data, message: 'Usuario registrado. Por favor, verifica tu correo.' })
+        res.send({ data, message: 'Usuario registrado. Por favor, revisa tu correo.' })
     } catch (error) {
         console.log(error);
 
@@ -53,6 +58,74 @@ controller.register = async (req, res) => {
     }
 
 }
+
+const generarCodigoVerificacion = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // Código de 6 dígitos
+};
+
+controller.verificarCodigo = async (req, res) => {
+    try {
+        const { token, codigo } = req.body;
+
+        
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log(decoded);
+        const email = decoded.email;
+
+        const usuario = await usuarioModel.findOne({ where: { email } });
+
+        if (!usuario) {
+            return res.status(404).send({ message: 'Usuario no encontrado' });
+        }
+
+        // Verificar si el código coincide y no ha expirado
+        if (
+            usuario.codigoVerificacion !== codigo ||
+            new Date() > usuario.fechaExpiracionCodigo
+        ) {
+            return res.status(400).send({ message: 'Código inválido o expirado' });
+        }
+
+        // Marcar el correo como verificado
+        usuario.verificado = true;
+        usuario.codigoVerificacion = null; // Limpiar el código
+        usuario.fechaExpiracionCodigo = null; // Limpiar la fecha de expiración
+        await usuario.save();
+
+        res.status(200).send({ message: 'Correo electrónico verificado con éxito' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: 'Error al verificar el código' });
+    }
+};
+
+controller.resendCode = async (req, res) => {
+    try {
+        const { token } = req.body;
+
+        // Verificar y decodificar el token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const email = decoded.email; // Extraer el email del token
+
+        // Generar un nuevo código de verificación
+        const codigoVerificacion = generarCodigoVerificacion();
+        const fechaExpiracion = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos de expiración
+
+        // Actualizar el código en la base de datos
+        const usuario = await usuarioModel.findOne({ where: { email } });
+        usuario.codigoVerificacion = codigoVerificacion;
+        usuario.fechaExpiracionCodigo = fechaExpiracion;
+        await usuario.save();
+
+        // Enviar el nuevo código por correo
+        await enviarCorreoVerificacion(email, codigoVerificacion);
+
+        res.status(200).send({ message: 'Código reenviado correctamente' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: 'Error al reenviar el código' });
+    }
+  };
 
 controller.registerRefugio = async (req, res) => {
     try {
@@ -208,18 +281,18 @@ controller.loginRefugio = async (req, res) => {
     }
 }
 
-controller.recuperarContrasena = async(req,res) =>{
+controller.recuperarContrasena = async (req, res) => {
     try {
         const email = req.body.email
         const usuario = await usuarioModel.findOne({
             where: { email: email }
         })
-        
-        if(!usuario){
+
+        if (!usuario) {
             handleHttpError(res, 'INVALID EMAIL', 401)
-            return 
+            return
         }
-        
+
         // Generar una nueva contraseña de 7 caracteres
         const nuevaContrasena = generarContrasenaAleatoria(7);
 
@@ -232,10 +305,10 @@ controller.recuperarContrasena = async(req,res) =>{
         );
 
         mensajeriaController.recuperarContrasena(email, nuevaContrasena)
-    
-        res.send({message:'Contraseña recuperada con éxito'})
-        
-    } catch (error) {        
+
+        res.send({ message: 'Contraseña recuperada con éxito' })
+
+    } catch (error) {
         res.status(500).send({ message: 'Error al reenviar contraseña' });
     }
 }
@@ -267,7 +340,7 @@ controller.verificarCorreo = async (req, res) => {
         res.redirect(`https://www.adoptahuellas.pet/verification-success?token=${encodedToken}`); // Cambia la URL según tu entorno
         //res.send({ message: 'Correo electrónico verificado con éxito' });
 
-  
+
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: 'Error al verificar el correo electrónico' });

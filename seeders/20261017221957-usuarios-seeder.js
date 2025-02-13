@@ -5,7 +5,7 @@ const { encrypt } = require('../src/utils/handlePassword');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-
+/* 
     //hash
     const hashedPsw1 = await encrypt('usuario')
 
@@ -34,7 +34,7 @@ module.exports = {
         idCiudad: 1,
         direccion: 'Barrio La Presidencial'
       },
-    ], {});
+    ], {}); */
   },
 
   async down (queryInterface, Sequelize) {
