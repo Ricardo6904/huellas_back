@@ -4,13 +4,13 @@ const { sequelize } = require('../src/config/mysql');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('mascotas', { 
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('animal_rescatado', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER 
+        type: Sequelize.INTEGER
       },
       nombre: {
         allowNull: false,
@@ -80,14 +80,22 @@ module.exports = {
       solicitudesPendientes: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        defaultValue: 0 
+        defaultValue: 0
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: true
       }
-      });
-    
+    });
+
   },
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('mascotas');
-     
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('animal_rescatado');
+
   }
 };

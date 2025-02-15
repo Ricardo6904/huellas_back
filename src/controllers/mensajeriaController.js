@@ -1,6 +1,6 @@
 const { body, matchedData } = require('express-validator');
 const nodemailer = require('nodemailer');
-const { refugioModel, adopcionModel, usuarioModel, mascotaModel } = require('../models')
+const { refugioModel, adopcionModel, usuarioModel, animalRescatadoModel } = require('../models')
 
 controller = {}
 const emailService = {}
@@ -74,8 +74,8 @@ controller.solicitudAceptada = async (req, res) => {
         const usuario = await usuarioModel.findOne({
             where: { id: adopcion.idUsuario }
         })
-        const mascota = await mascotaModel.findOne({
-            where: { id: adopcion.idMascota }
+        const mascota = await animalRescatadoModel.findOne({
+            where: { id: adopcion.idAnimalRescatado }
         })
         const mensaje = `
             <p>¡Felicidades, ${usuario.nombres}  ${usuario.apellidos}!</p>
@@ -108,8 +108,8 @@ controller.solicitudRechazada = async (req, res) => {
         const usuario = await usuarioModel.findOne({
             where: { id: adopcion.idUsuario }
         })
-        const mascota = await mascotaModel.findOne({
-            where: { id: adopcion.idMascota }
+        const mascota = await animalRescatadoModel.findOne({
+            where: { id: adopcion.idAnimalRescatado }
         })
 
         const mensaje = `

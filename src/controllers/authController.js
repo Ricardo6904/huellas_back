@@ -24,14 +24,14 @@ controller.register = async (req, res) => {
 
         const usuarioExistente = await usuarioModel.findOne({
             where: {
-                cedula: req.cedula,
+                identificacion: req.identificacion,
                 email: req.email
             }
         });
 
 
         if (usuarioExistente) {
-            res.status(400).send({ message: 'Correo o Cédula ya registrados' })
+            res.status(400).send({ message: 'Correo o Número de Identificacion ya registrados' })
         }
 
         const clave = await encrypt(req.clave)

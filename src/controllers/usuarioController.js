@@ -54,15 +54,14 @@ controller.actualizarUsuario = async (req, res) => {
     try {
         const { idUsuario } = req.params
         const body = req.body
-        console.log('IDUSUARIO', idUsuario, body);
 
-
-        const [rows] = await usuarioModel.update(body, { where: { id: idUsuario } });
-        if (rows === 0) return handleHttpError(res, 'USUARIO_NOT_FOUND', 404)
         const data = await usuarioModel.findByPk(idUsuario)
-        res.send({ data })
+        if (!data) return handleHttpError(res, 'USUARIO_NOT_FOUND', 404)
+        
+        await usuarioModel.update(body, { where: { id: idUsuario } });
+        
+        res.send({ msg:'Usuario Actualizado.' })
     } catch (error) {
-        console.log(error);
         handleHttpError(res, 'ERROR_UPDATE_USUARIO', 403)
     }
 }
@@ -100,7 +99,7 @@ controller.actualizarCampoSolicitud = async (req, res) => {
 }
 
 controller.actualizarInfoAdicional = async (req, res) => {
-    try {
+   /*  try {
         const { idUsuario } = req.params;
         const { infoAdicional } = req.body;
 
@@ -117,7 +116,7 @@ controller.actualizarInfoAdicional = async (req, res) => {
     } catch (error) {
         console.log(error);
         handleHttpError(res, 'ERROR_UPDATE_INFO_ADICIONAL', 403);
-    }
+    } */
 };
 
 controller.obtenerInfoAdicional = async (req, res) => {

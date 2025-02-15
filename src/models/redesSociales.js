@@ -1,7 +1,7 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
 
-const RedSocial = sequelize.define('redesSociales', {
+const RedSocial = sequelize.define('redes_sociales', {
     id: {
         allowNull: false,
         autoIncrement: true,
@@ -27,7 +27,7 @@ const RedSocial = sequelize.define('redesSociales', {
         allowNull: true
       },
 },{
-    tableName: 'redesSociales',
+    tableName: 'redes_sociales',
     timestamps: false
 })
 

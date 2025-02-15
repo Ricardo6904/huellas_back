@@ -1,8 +1,10 @@
 const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
-const Mascota = require('./mascotas')
+const animalRescatado = require('./animalRescatado')
 const Storage = require('./storage')
 const Usuario = require('./usuarios')
+const Provincia = require('./provincias')
+const Ciudad = require('./ciudades')
 
 const adopcion = sequelize.define(
     'adopciones',
@@ -12,7 +14,7 @@ const adopcion = sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        idMascota: {
+        idAnimalRescatado: {
             type: DataTypes.INTEGER
         },
         idUsuario: {
@@ -33,22 +35,24 @@ const adopcion = sequelize.define(
 )
 
 //definir relaciones
-adopcion.belongsTo(Mascota, { foreignKey: 'idMascota' });
-Mascota.belongsTo(Storage, { foreignKey: 'idStorage' });
+adopcion.belongsTo(animalRescatado, { foreignKey: 'idAnimalRescatado', as: 'animalRescatado'  });
+animalRescatado.belongsTo(Storage, { foreignKey: 'idStorage'});
 adopcion.belongsTo(Usuario, { foreignKey: 'idUsuario' })
-
+Usuario.belongsTo(Provincia, {foreignKey: 'idProvincia', as: 'Provincia'})
+Usuario.belongsTo(Ciudad, {foreignKey: 'idCiudad', as: 'Ciudad'})
 adopcion.findAllData = function (idRefugio, estado) {
     return adopcion.findAll({
         where: {estado: estado},
         include: [
             {
-                model: Mascota,
+                model: animalRescatado,
                 include: [Storage],
-                where: {idRefugio: idRefugio }
+                where: {idRefugio: idRefugio },
+                as: 'animalRescatado'
             },
             {
                 model: Usuario,
-
+                include: [{model: Provincia, as: 'Provincia'}, {model: Ciudad, as: 'Ciudad'}]
             }
         ]
     })

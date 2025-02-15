@@ -12,10 +12,10 @@ module.exports = {
         primaryKey: true,
         type:Sequelize.INTEGER
       },
-      idMascota:{
+      idAnimalRescatado:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'mascotas',
+          model: 'animal_rescatado',
           key: 'id'
         },
         onUpdate: 'CASCADE',

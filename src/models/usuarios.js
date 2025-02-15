@@ -15,14 +15,30 @@ const Usuario = sequelize.define('usuarios', {
   apellidos: {
     type: DataTypes.STRING
   },
-  cedula: {
+  tipoIdentificacion: {
+    allowNull: false,
     type: DataTypes.STRING
   },
+  identificacion: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    unique: true
+  },
+  codigoCelular: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: 'ec'
+  },
   celular: {
+    allowNull: false,
     type: DataTypes.STRING
   },
   email: {
     type: DataTypes.STRING
+  },
+  fechaNacimiento: {
+    allowNull: false,
+    type: DataTypes.DATE
   },
   clave: {
     type: DataTypes.STRING,

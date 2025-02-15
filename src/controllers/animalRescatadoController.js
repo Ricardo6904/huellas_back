@@ -1,6 +1,6 @@
 controller = {}
 const { Op } = require('sequelize')
-const { mascotaModel } = require('../models')
+const { animalRescatadoModel } = require('../models')
 const { storageModel } = require('../models')
 const handleErrors = require('../utils/handleErrors')
 const fs = require('fs')
@@ -11,9 +11,8 @@ const MEDIA_PATH = `${__dirname}/../storage`
 controller.obtenerMascota = async (req, res) => {
     try {
         const id = req.params.id
-        console.log(req.params);
 
-        const data = await mascotaModel.findOneData(id)
+        const data = await animalRescatadoModel.findOneData(id)
         res.send({ data })
     } catch (error) {
         console.log(error);
@@ -49,7 +48,7 @@ controller.obtenerMascotas = async (req, res) => {
 
 
         //consulta con paginación usando limit y offset
-        const { count, rows } = await mascotaModel.findAndCountAllData(
+        const { count, rows } = await animalRescatadoModel.findAndCountAllData(
             limit,
             offset,
             filtro
@@ -63,6 +62,8 @@ controller.obtenerMascotas = async (req, res) => {
             currentPage: page
         })
     } catch (error) {
+        console.log(error);
+        
         handleErrors(res, 'ERROR_GET_MASCOTA', 403)
     }
 }
@@ -74,21 +75,18 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
         const offset = (page - 1) * limit;
 
         const idRefugio = req.params.idRefugio
-        console.log(req.params);
 
         let filtro = {};
         filtro.idRefugio = idRefugio
 
         //filtro por nombre
         const { nombre } = req.query;
-        console.log(req.query);
-
         if (nombre) {
             filtro.nombre = { [Op.like]: `%${nombre}%` };
         }
 
 
-        const { count, rows } = await mascotaModel.findAndCountAllData(
+        const { count, rows } = await animalRescatadoModel.findAndCountAllData(
             limit,
             offset,
             filtro
@@ -113,7 +111,7 @@ controller.obtenerMascotasPorIdFundacionOld = async (req, res) => {
         const idRefugio = req.params.idRefugio
 
 
-        const data = await mascotaModel.findAllData({
+        const data = await animalRescatadoModel.findAllData({
             where: { idRefugio: idRefugio }
         })
 
@@ -131,9 +129,11 @@ controller.obtenerMascotasPorIdFundacionOld = async (req, res) => {
 controller.crearMascota = async (req, res) => {
     try {
         const { body } = req
-        const data = await mascotaModel.create(body)
+        const data = await animalRescatadoModel.create(body)
         res.send({ data })
     } catch (error) {
+        console.log(error);
+        
         handleErrors(res, 'ERROR_CREATE_MASCOTA', 403)
     }
 
@@ -141,11 +141,11 @@ controller.crearMascota = async (req, res) => {
 
 controller.actualizarMascota = async (req, res) => {
     try {
-        const { idMascota } = req.params;
+        const { id } = req.params;
         const { estado } = req.params;
 
         // Buscar la mascota
-        const mascota = await mascotaModel.findByPk(idMascota);
+        const mascota = await animalRescatadoModel.findByPk(id);
 
         if (!mascota) {
             return res.status(404).send({ message: 'Mascota no encontrada' });
@@ -158,8 +158,8 @@ controller.actualizarMascota = async (req, res) => {
 
 
         const body = req.body;
-        const update = await mascotaModel.update(body, { where: { id: idMascota } })
-        const data = await mascotaModel.findByPk(idMascota)
+        const update = await animalRescatadoModel.update(body, { where: { id: id } })
+        const data = await animalRescatadoModel.findByPk(id)
         res.send({ message: 'Mascota actualizada', data: mascota });
     } catch (error) {
         handleErrors(res, 'ERROR_UPDATE_MASCOTA', 403)
@@ -169,9 +169,9 @@ controller.actualizarMascota = async (req, res) => {
 
 controller.eliminarMascota = async (req, res) => {
     try {
-        const idMascota = req.params.idMascota
-        const mascota = await mascotaModel.findOneData(idMascota)
-        const data = await mascotaModel.destroy({ where: { id: idMascota } })
+        const id = req.params.id
+        const mascota = await animalRescatadoModel.findOneData(id)
+        const data = await animalRescatado.destroy({ where: { id: id } })
         const idStorage = mascota.idStorage
 
         const dataFile = await storageModel.findByPk(idStorage)
@@ -196,7 +196,7 @@ controller.incrementarSolicitudes = async (req, res) => {
         const { id } = req.params;
         
         // Buscar la mascota por ID
-        const mascota = await mascotaModel.findByPk(id);
+        const mascota = await animalRescatadoModel.findByPk(id);
 
         // Verificar si la mascota existe
         if (!mascota) {
@@ -226,9 +226,7 @@ controller.decrementarSolicitudes = async (req, res) => {
         const { id } = req.params;
 
         // Buscar la mascota por ID
-        const mascota = await mascotaModel.findByPk(id);
-        console.log(id, mascota);
-        
+        const mascota = await animalRescatadoModel.findByPk(id);
 
         // Verificar si la mascota existe
         if (!mascota) {
@@ -257,7 +255,7 @@ controller.mascotaAdoptada = async(req,res) => {
         const { id } = req.params;
         
         // Buscar la mascota por ID
-        const mascota = await mascotaModel.findByPk(id);
+        const mascota = await animalRescatadoModel.findByPk(id);
 
         // Verificar si la mascota existe
         if (!mascota) {

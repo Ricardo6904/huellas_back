@@ -18,14 +18,27 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      cedula: {
+      tipoIdentificacion: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      identificacion: {
         allowNull: false,
         type: Sequelize.STRING,
         unique: true
       },
+      codigoCelular: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'ec'
+      },
       celular: {
         allowNull: false,
         type: Sequelize.STRING
+      },
+      fechaNacimiento: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       email: {
         allowNull: false,

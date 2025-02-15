@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert("redesSociales", [
+    return queryInterface.bulkInsert("redes_sociales", [
       {
         idRefugio: 1, // Asegúrate de que existe un refugio con este ID
         nombre: "facebook",
@@ -18,6 +18,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete("redesSociales", null, {});
+    return queryInterface.bulkDelete("redes_sociales", null, {});
   }
 };

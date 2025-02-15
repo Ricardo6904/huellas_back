@@ -1,5 +1,5 @@
 const { matchedData } = require('express-validator')
-const { adopcionModel, usuarioModel, mascotaModel } = require('../models')
+const { adopcionModel, usuarioModel, animalRescatadoModel } = require('../models')
 const handleHttpError = require('../utils/handleErrors')
 
 const controller = {}
@@ -18,7 +18,6 @@ controller.obtenerAdopciones = async (req, res) => {
 
 controller.obtenerAdopcionPorIdRefugio = async (req, res) => {
     try {
-        console.log(req.params);
         const idRefugio = req.params.idRefugio
         const estado = 'pendiente'
         const data = await adopcionModel.findAllData(idRefugio, estado)
@@ -42,7 +41,7 @@ controller.crearAdopcion = async (req, res) => {
 
         const adopcionExistente = await adopcionModel.findOne({
             where: {
-                idMascota: req.idMascota,
+                idAnimalRescatado: req.idAnimalRescatado,
                 idUsuario: req.idUsuario,
             }
         })
@@ -65,9 +64,9 @@ controller.crearAdopcion = async (req, res) => {
             });
         }
 
-        await mascotaModel.update(
+        await animalRescatadoModel.update(
             { estado: 'pendiente' }, // Cambiar el estado
-            { where: { id: req.idMascota } } // Mascota correspondiente
+            { where: { id: req.idAnimalRescatado } } // Mascota correspondiente
         );
 
 
@@ -87,9 +86,9 @@ controller.aprobarSolicitud = async (req, res) => {
             where: { id: id }
         })
 
-        const mascota = await mascotaModel.findOne({
+        const mascota = await animalRescatadoModel.findOne({
             where: {
-                id: adopcion.idMascota
+                id: adopcion.idAnimalRescatado
             }
         })
 
@@ -128,9 +127,9 @@ controller.rechazarSolicitud = async (req, res) => {
             where: { id: id }
         })
 
-        const mascota = await mascotaModel.findOne({
+        const mascota = await animalRescatadoModel.findOne({
             where: {
-                id: adopcion.idMascota
+                id: adopcion.idAnimalRescatado
             }
         })
 

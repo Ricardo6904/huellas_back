@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize')
 const Storage = require('./storage');
 const refugio = require('./refugios');
 
-const mascota = sequelize.define('mascotas', {
+const animalRescatado = sequelize.define('animal_rescatado', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -35,7 +35,14 @@ const mascota = sequelize.define('mascotas', {
     type: DataTypes.STRING,
   },
   idStorage: {
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'storage',
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+    allowNull: true
   },
   esEsterilizado: {
     type: DataTypes.TINYINT
@@ -57,38 +64,46 @@ const mascota = sequelize.define('mascotas', {
     allowNull: false,
     type: DataTypes.INTEGER,
     defaultValue: 0
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: true
   }
 }, {
-  tableName: 'mascotas', // El nombre de la tabla en la base de datos
-  timestamps: false // Si no tienes campos de timestamp (createdAt, updatedAt)
+  tableName: 'animal_rescatado', // El nombre de la tabla en la base de datos
+  timestamps: true // Si no tienes campos de timestamp (createdAt, updatedAt)
 });
 
 /**
  * Implementando modelo personalizado
  */
-mascota.belongsTo(Storage, {
+animalRescatado.belongsTo(Storage, {
   foreignKey: 'idStorage',
 });
-mascota.belongsTo(refugio, {
+animalRescatado.belongsTo(refugio, {
   foreignKey: 'idRefugio'
 })
 
-mascota.findAllData = function () {
+animalRescatado.findAllData = function () {
   /* mascota.belongsTo(Storage, {
     foreignKey: 'idStorage',
   }) */
-  return mascota.findAll({ include: [Storage, refugio] })
+  return animalRescatado.findAll({ include: [Storage, refugio] })
 }
 
 
 
-mascota.findAndCountAllData = function (limit, offset, filtro) {
+animalRescatado.findAndCountAllData = function (limit, offset, filtro) {
 
-
-  return mascota.findAndCountAll({
+  return animalRescatado.findAndCountAll({
     include: [Storage, {
       model: refugio,
-      include: [Storage]
+      attributes: { exclude: ['clave'] },
+      include: [Storage],
     }],
     where: filtro,
     limit: limit,
@@ -96,16 +111,16 @@ mascota.findAndCountAllData = function (limit, offset, filtro) {
   })
 }
 
-mascota.findOneData = function (idMascota) {
-  mascota.belongsTo(Storage, {
+animalRescatado.findOneData = function (id) {
+  animalRescatado.belongsTo(Storage, {
     foreignKey: 'idStorage'
   })
-  return mascota.findOne({
-    where: { id: idMascota }, include: [Storage, {
+  return animalRescatado.findOne({
+    where: { id: id }, include: [Storage, {
       model: refugio,
       include: [Storage]
     }]
   })
 }
 
-module.exports = mascota;
+module.exports = animalRescatado;
