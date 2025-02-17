@@ -56,10 +56,6 @@ const refugio = sequelize.define('refugios', {
         allowNull: false,
         defaultValue: 'pendiente'
     },
-    mapaUrl: {
-        type: DataTypes.TEXT,
-        allowNull: true
-    },
     idStorage: {
         type: DataTypes.INTEGER,
         references: {
@@ -68,6 +64,14 @@ const refugio = sequelize.define('refugios', {
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
+        allowNull: true
+    },
+    latitud: {
+        type: DataTypes.DECIMAL(10, 8),
+        allowNull: true
+    },
+    longitud: {
+        type: DataTypes.DECIMAL(11, 8),
         allowNull: true
     },
 }, {

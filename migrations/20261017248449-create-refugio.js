@@ -82,10 +82,14 @@ module.exports = {
         onDelete: 'SET NULL',
         allowNull: true
       },
-      mapaUrl: {
-        type:Sequelize.TEXT,
+      latitud: {
+        type: Sequelize.DECIMAL(10, 8),
         allowNull: true
-      }
+      },
+      longitud: {
+        type: Sequelize.DECIMAL(11, 8),
+        allowNull: true
+      },
     });
 
   },
