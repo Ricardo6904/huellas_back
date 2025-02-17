@@ -6,7 +6,8 @@ const models = {
     refugioModel: require('./refugios'),
     ciudadModel: require('./ciudades'),
     provinciaModel: require('./provincias'),
-    redesSocialesModel: require('./redesSociales')
+    redesSocialesModel: require('./redesSociales'),
+    mascotasModel: require('./mascotas')
 }
 
 module.exports = models;

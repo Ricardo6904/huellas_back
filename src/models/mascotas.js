@@ -1,53 +1,51 @@
-'use strict';
+const { sequelize } = require('../config/mysql')
+const { DataTypes } = require('sequelize')
 
-/** @type {import('sequelize-cli').Migration} */
-module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('mascotas', {
-      id: {
+const Mascotas = sequelize.define('mascotas', {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
       },
       nombre: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       especie: {
         allowNull: false,
-        type: Sequelize.ENUM('perro', 'gato', 'otro')
+        type: DataTypes.ENUM('perro', 'gato', 'otro')
       },
       raza: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       edad: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       sexo: {
         allowNull: false,
-        type: Sequelize.ENUM('macho', 'hembra')
+        type: DataTypes.ENUM('macho', 'hembra')
       },
       tamano: {
         allowNull: false,
-        type: Sequelize.ENUM('pequeño', 'mediano', 'grande')
+        type: DataTypes.ENUM('pequeño', 'mediano', 'grande')
       },
       descripcion: {
         allowNull: true,
-        type: Sequelize.TEXT
+        type: DataTypes.TEXT
       },
       estado: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       urlQR: {
         allowNull: true,
-        type: Sequelize.TEXT
+        type: DataTypes.TEXT
       },
       idStorage: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'storage',
           key: 'id'
@@ -57,7 +55,7 @@ module.exports = {
         allowNull: true
       },
       idUsuario:{
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: 'usuarios',
           key: 'id'
@@ -68,17 +66,16 @@ module.exports = {
       },
       createdAt: {
         allowNull: true,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
       },
       updatedAt: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
-    })
-  },
+}, {
+  tableName: 'mascotas',
+  timestamps: false
+});
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('mascotas');
-  }
-};
+module.exports = Mascotas;
