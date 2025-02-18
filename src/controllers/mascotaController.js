@@ -68,11 +68,57 @@ controller.obtenerMascotas = async (req, res) => {
     }
 }
 
+controller.obtenerMascotasPorIdUsuario = async (req, res) => {
+    try {
+        //parámetros de paginación
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const offset = (page - 1) * limit;
+
+        const idUsuario = req.params.id
+
+        let filtro = {};
+        filtro.id = idUsuario
+
+        //filtro por nombre
+        const { nombre } = req.query;
+        if (nombre) {
+            filtro.nombre = { [Op.like]: `%${nombre}%` };
+        }
+
+
+        const { count, rows } = await mascotasModel.findAndCountAllData(
+            limit,
+            offset,
+            filtro
+        )
+
+
+
+        res.send({
+            data: rows,
+            total: count,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        })
+    } catch (error) {
+        console.log(error);
+        
+        handleErrors(res, 'ERROR_GET_MASCOTA_USUARIO', 403)
+    }
+}
+
 controller.crearMascota = async (req, res) => {
     try {
         const { body } = req
-        const data = await mascotasModel.create(body)
-        res.send({ data })
+        const mascota = await mascotasModel.create(body)
+
+        const mascotaUrl = `${mascota.urlQR}/${mascota.id}`
+
+        mascota.urlQR = mascotaUrl
+        await mascota.save()
+
+        res.send({ mascota })
     } catch (error) {
         console.log(error);
         
@@ -132,5 +178,28 @@ controller.eliminarMascota = async (req, res) => {
         handleHttpError(res, 'ERROR_DELETE_MASCOTA', 403)
     }
 }
+
+controller.redirigirMascota = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Buscar la mascota en la base de datos
+        const mascota = await mascotasModel.findByPk(id);
+
+        if (!mascota) {
+            return res.status(404).send({ message: 'Mascota no encontrada' });
+        }
+
+        // URL de redirección almacenada en la base de datos
+        const urlDestino = `${mascota.urlQR}/${id}`;
+
+        // Redirigir al usuario a la URL del frontend
+        return res.redirect(301, urlDestino); // 301 para redirección permanente
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ message: 'Error en la redirección' });
+    }
+};
+
 
 module.exports = controller
