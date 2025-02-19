@@ -42,10 +42,6 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
-      urlQR: {
-        allowNull: true,
-        type: Sequelize.TEXT
-      },
       idStorage: {
         type: Sequelize.INTEGER,
         references: {

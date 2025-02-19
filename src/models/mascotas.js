@@ -42,10 +42,6 @@ const Mascotas = sequelize.define('mascotas', {
         allowNull: true,
         type: DataTypes.STRING
       },
-      urlQR: {
-        allowNull: true,
-        type: DataTypes.TEXT
-      },
       idStorage: {
         type: DataTypes.INTEGER,
         references: {
@@ -82,17 +78,24 @@ const Mascotas = sequelize.define('mascotas', {
 
 Mascotas.belongsTo(Storage, {
   foreignKey: 'idStorage',
+  as: 'Storage'
 });
 
 Mascotas.belongsTo(Usuario, {
-  foreignKey: 'idUsuario'
+  foreignKey: 'idUsuario',
+  as: 'Usuario'
 })
 
 Mascotas.findAndCountAllData = function (limit, offset, filtro) {
 
   return Mascotas.findAndCountAll({
-    include: [Storage, {
+    include: [
+      { 
+        model:Storage,
+        as: 'Storage'  
+      }, {
       model: Usuario,
+      as:'Usuario',
       attributes: { exclude: ['clave'] },
     }],
     where: filtro,
@@ -102,12 +105,19 @@ Mascotas.findAndCountAllData = function (limit, offset, filtro) {
 }
 
 Mascotas.findOneData = function (id) {
-  Mascotas.belongsTo(Storage, {
-    foreignKey: 'idStorage'
-  })
+  console.log('dataaa', id);
+  
   return Mascotas.findOne({
-    where: { id: id }, include: [Storage, {
-      model: Usuario
+    where: { id: id }, 
+    include: [
+      {
+        model: Storage,
+        as: 'Storage',
+      }, 
+      {
+        model: Usuario,
+        as: 'Usuario',
+        attributes: ['nombres', 'apellidos', 'celular', 'email']
     }]
   })
 }

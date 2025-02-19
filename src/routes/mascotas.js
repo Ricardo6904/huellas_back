@@ -7,7 +7,7 @@ router.get('/', mascotaController.obtenerMascotas)
 
 router.get('/:id', mascotaController.obtenerMascota)
 
-router.get('/usuario/:id', authMiddleware, mascotaController.obtenerMascotasPorIdUsuario)
+router.get('/usuario/:id', mascotaController.obtenerMascotasPorIdUsuario)
 
 router.post('/', authMiddleware, mascotaController.crearMascota)
 
@@ -15,6 +15,6 @@ router.put('/:id', authMiddleware, mascotaController.actualizarMascota)
 
 router.delete('/:id', authMiddleware, mascotaController.eliminarMascota)
 
-router.get('/mascotas/:id', mascotaController.redirigirMascota);
+router.get('/redirect/:id', mascotaController.redirigirMascota);
 
 module.exports = router

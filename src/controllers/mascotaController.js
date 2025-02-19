@@ -10,6 +10,8 @@ const MEDIA_PATH = `${__dirname}/../storage`
 
 controller.obtenerMascota = async (req, res) => {
     try {
+
+        
         const id = req.params.id
 
         const data = await mascotasModel.findOneData(id)
@@ -77,8 +79,11 @@ controller.obtenerMascotasPorIdUsuario = async (req, res) => {
 
         const idUsuario = req.params.id
 
-        let filtro = {};
-        filtro.id = idUsuario
+        console.log('idusuario',req.params);
+        
+
+        let filtro = {idUsuario};
+        //filtro.id = idUsuario
 
         //filtro por nombre
         const { nombre } = req.query;
@@ -93,7 +98,8 @@ controller.obtenerMascotasPorIdUsuario = async (req, res) => {
             filtro
         )
 
-
+        console.log(rows);
+        
 
         res.send({
             data: rows,
@@ -179,7 +185,7 @@ controller.eliminarMascota = async (req, res) => {
     }
 }
 
-controller.redirigirMascota = async (req, res) => {
+/* controller.redirigirMascota = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -200,6 +206,23 @@ controller.redirigirMascota = async (req, res) => {
         return res.status(500).send({ message: 'Error en la redirección' });
     }
 };
+ */
 
+controller.redirigirMascota = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+
+        // URL de redirección al frontend
+        const frontendUrl = `https://www.adoptahuellas.pet/usuario/mascota/${id}`;
+        console.log(frontendUrl);
+        
+        // Redirigir al usuario a la URL del frontend
+        return res.redirect(301, frontendUrl); // 301 para redirección permanente
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ message: 'Error en la redirección' });
+    }
+};
 
 module.exports = controller
