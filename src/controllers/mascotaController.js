@@ -189,18 +189,15 @@ controller.eliminarMascota = async (req, res) => {
 controller.redirigirMascota = async (req, res) => {
     try {
         const { id } = req.params;
-        
-
-        // URL de redirección al frontend
         const frontendUrl = `https://www.adoptahuellas.pet/usuario/mascota/${id}`;
-        console.log(frontendUrl);
         
-        // Redirigir al usuario a la URL del frontend
-        return res.redirect(301, frontendUrl); // 301 para redirección permanente
+        // Redireccionar con estado 302 (temporal)
+        res.redirect(302, frontendUrl);
     } catch (error) {
         console.log(error);
         return res.status(500).send({ message: 'Error en la redirección' });
     }
 };
+
 
 module.exports = controller
