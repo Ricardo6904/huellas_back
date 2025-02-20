@@ -185,28 +185,6 @@ controller.eliminarMascota = async (req, res) => {
     }
 }
 
-/* controller.redirigirMascota = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        // Buscar la mascota en la base de datos
-        const mascota = await mascotasModel.findByPk(id);
-
-        if (!mascota) {
-            return res.status(404).send({ message: 'Mascota no encontrada' });
-        }
-
-        // URL de redirección almacenada en la base de datos
-        const urlDestino = `${mascota.urlQR}/${id}`;
-
-        // Redirigir al usuario a la URL del frontend
-        return res.redirect(301, urlDestino); // 301 para redirección permanente
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send({ message: 'Error en la redirección' });
-    }
-};
- */
 
 controller.redirigirMascota = async (req, res) => {
     try {

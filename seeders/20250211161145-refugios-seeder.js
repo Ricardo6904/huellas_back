@@ -19,6 +19,8 @@ module.exports = {
         email: 'patitasnobles.adoptahuellas@gmail.com',
         rol: 'refugio',
         estado: 'activo',
+        latitud: -1.268676,
+        longitud: -78.633545,
         clave: hashedMacarenaPassword,
       }
     ], {});

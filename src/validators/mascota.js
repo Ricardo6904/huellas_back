@@ -11,4 +11,4 @@ const validatorCrearMascota = [
 ]
 
 
-module.exports = { validatorCrearUsuario }
+module.exports = { validatorCrearMascota }
