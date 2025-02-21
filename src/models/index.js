@@ -7,7 +7,8 @@ const models = {
     ciudadModel: require('./ciudades'),
     provinciaModel: require('./provincias'),
     redesSocialesModel: require('./redesSociales'),
-    mascotasModel: require('./mascotas')
+    mascotasModel: require('./mascotas'),
+    historialMascotasModel: require('./historialMascotas')
 }
 
 module.exports = models;
