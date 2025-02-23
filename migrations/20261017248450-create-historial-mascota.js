@@ -20,10 +20,9 @@ module.exports = {
         onDelete: 'CASCADE',
         allowNull: false
       },
-      estado: {
-        allowNull: false,
-        type: Sequelize.ENUM('perdido', 'encontrado'),
-        defaultValue: 'perdido'
+      descripcion: {
+        allowNull: true,
+        type: Sequelize.TEXT
       },
       latitud: {
         allowNull: true,
@@ -38,7 +37,7 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       },
-      fechaEvento: {
+      fecha: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
