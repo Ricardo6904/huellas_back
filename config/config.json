@@ -14,11 +14,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "admin",
-    "password": "AdoptaHuellas2025",
-    "database": "adoptahuellasdb",
-    "host": "adoptahuellasdb.cd02scigmyo0.us-east-2.rds.amazonaws.com",
+    "username": "root",
+    "password": "EFVyIAWOxDvXaSRpWPEizFasTvDpmiDV",
+    "database": "railway",
+    "host": "turntable.proxy.rlwy.net",
     "dialect": "mysql",
-    "port": 3306
+    "port": 21523
   }
 }

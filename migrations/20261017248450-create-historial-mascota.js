@@ -24,6 +24,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.TEXT
       },
+      estado: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       latitud: {
         allowNull: true,
         type: Sequelize.FLOAT

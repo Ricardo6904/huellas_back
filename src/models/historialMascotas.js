@@ -24,6 +24,10 @@ const HistorialMascotas = sequelize.define('historial_mascotas', {
     allowNull: true,
     type: DataTypes.TEXT
   },
+  estado: {
+    allowNull: true,
+    type: DataTypes.STRING
+  },
   latitud: {
     allowNull: true,
     type: DataTypes.FLOAT

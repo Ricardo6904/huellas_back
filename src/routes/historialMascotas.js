@@ -15,4 +15,6 @@ router.put('/:id', authMiddleware, historialMascotasController.actualizar)
 
 router.delete('/:id', authMiddleware, historialMascotasController.eliminar)
 
+router.get('/reciente/:id', authMiddleware,historialMascotasController.obtenerHistorialActivoReciente);
+
 module.exports = router

@@ -130,9 +130,7 @@ controller.crear = async (req, res) => {
         const mascotaUsuario = await mascotasModel.findByPk(historialMascota.idMascota)
         console.log(mascotaUsuario);
         
-        const mascotaUrl = `${historialMascota.urlQR}/${historialMascota.id}`
 
-        historialMascota.urlQR = mascotaUrl
         mascotaUsuario.estado = 'perdido'
 
         await historialMascota.save()
@@ -199,6 +197,29 @@ controller.eliminar = async (req, res) => {
     }
 }
 
+controller.obtenerHistorialActivoReciente = async (req, res) => {
+    try {
+        const idMascota = req.params.id;
+
+        const data = await historialMascotasModel.findOne({
+            where: {
+                idMascota: idMascota,
+                activo: true,
+                estado: 'encontrada'
+            },
+            order: [['fecha', 'DESC']]
+        });
+
+        if (!data) {
+            return res.status(404).send({ message: 'No se encontró un historial activo reciente' });
+        }
+
+        res.send({ data });
+    } catch (error) {
+        console.log(error);
+        handleErrors(res, 'ERROR_GET_HISTORIAL_ACTIVO_RECIENTE', 403);
+    }
+};
 
 
 
