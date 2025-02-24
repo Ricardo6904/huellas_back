@@ -11,8 +11,18 @@ const sequelize = new Sequelize(
     password,
     {
         host,
-        dialect: "mysql"
+        dialect: "mysql",
+        dialectOptions: {
+            connectTimeout: 100000, 
+        }
+    },
+    {
+        max: 5,
+        min: 0,
+        acquire: 100000, // Tiempo máximo para intentar adquirir una conexión (100 segundos)
+        idle: 10000 // Tiempo de inactividad antes de liberar la conexión
     }
+    
 )
 
 const dbConnectMySql = async() => {
