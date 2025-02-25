@@ -14,10 +14,13 @@ const sequelize = new Sequelize(
     {
         host,
         dialect: "mysql",
-        ssl: {
-            ca: fs.readFileSync(path.resolve(__dirname, '../../config/isrgrootx1.pem'))
+        dialectOptions: {
+            ssl: {
+                rejectUnauthorized: true,
+                ca: fs.readFileSync(path.resolve(__dirname, '../../config/isrgrootx1.pem'))
+            }
         }
-    },
+    }
 )
 
 const dbConnectMySql = async() => {
