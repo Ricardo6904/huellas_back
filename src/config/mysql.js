@@ -14,12 +14,12 @@ const sequelize = new Sequelize(
     {
         host,
         dialect: "mysql",
-       /*  dialectOptions: {
+        dialectOptions: {
             ssl: {
                 rejectUnauthorized: true,
                 ca: fs.readFileSync(path.resolve(__dirname, '../../config/isrgrootx1.pem'))
             }
-        } */
+        }
     }
 )
 

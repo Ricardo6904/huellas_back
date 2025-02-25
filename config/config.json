@@ -22,8 +22,9 @@
     "port": 4000,
     "dialectOptions": {
       "ssl": {
-        "ca": "./isrgrootx1.pem"
+          "rejectUnauthorized": false,
+          "ca": "./isrgrootx1.pem"
       }
-    }
+  }
   }
 }
