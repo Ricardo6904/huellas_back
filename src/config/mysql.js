@@ -4,6 +4,8 @@ const db = process.env.MYSQL_DB;
 const user = process.env.MYSQL_USER;
 const password = process.env.MYSQL_PASSWORD;
 const host = process.env.MYSQL_HOST;
+const path = require('path')
+const fs = require('fs');
 
 const sequelize = new Sequelize(
     db,
@@ -13,7 +15,7 @@ const sequelize = new Sequelize(
         host,
         dialect: "mysql",
         ssl: {
-            ca: path.join(__dirname, '../config/isrgrootx1.pem')
+            ca: fs.readFileSync(path.join(__dirname, '../config/isrgrootx1.pem'))
         }
     },
 )
