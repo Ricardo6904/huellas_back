@@ -12,17 +12,10 @@ const sequelize = new Sequelize(
     {
         host,
         dialect: "mysql",
-        dialectOptions: {
-            connectTimeout: 100000, 
+        ssl: {
+            ca: fs.readFileSync(path.resolve(__dirname, '../config/isrgrootx1.pem'))
         }
     },
-    {
-        max: 5,
-        min: 0,
-        acquire: 100000, // Tiempo máximo para intentar adquirir una conexión (100 segundos)
-        idle: 10000 // Tiempo de inactividad antes de liberar la conexión
-    }
-    
 )
 
 const dbConnectMySql = async() => {
