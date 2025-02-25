@@ -14,13 +14,25 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      especie: {
-        allowNull: false,
-        type: Sequelize.ENUM('perro', 'gato', 'otro')
+      idEspecie: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'especies',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false
       },
-      raza: {
-        allowNull: true,
-        type: Sequelize.STRING
+      idRaza: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'razas',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false
       },
       edad: {
         allowNull: true,

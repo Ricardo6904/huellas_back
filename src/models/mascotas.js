@@ -14,13 +14,25 @@ const Mascotas = sequelize.define('mascotas', {
         allowNull: false,
         type: DataTypes.STRING
       },
-      especie: {
-        allowNull: false,
-        type: DataTypes.ENUM('perro', 'gato', 'otro')
+      idEspecie: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'especies',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false
       },
-      raza: {
-        allowNull: true,
-        type: DataTypes.STRING
+      idRaza: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'razas',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false
       },
       edad: {
         allowNull: true,
