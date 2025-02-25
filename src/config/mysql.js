@@ -14,12 +14,12 @@ const sequelize = new Sequelize(
     {
         host,
         dialect: "mysql",
-        dialectOptions: {
+       /*  dialectOptions: {
             ssl: {
                 rejectUnauthorized: true,
                 ca: fs.readFileSync(path.resolve(__dirname, '../../config/isrgrootx1.pem'))
             }
-        }
+        } */
     }
 )
 
@@ -27,7 +27,6 @@ const dbConnectMySql = async() => {
     try {
         await sequelize.authenticate()
         console.log('MYSQL conectado correctamente');
-        console.log(process.env.MYSQL_HOST);
     } catch (error) {
         console.log('MYSQL error conexion',error);
     }

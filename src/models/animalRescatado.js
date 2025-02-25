@@ -2,6 +2,8 @@ const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize')
 const Storage = require('./storage');
 const refugio = require('./refugios');
+const Especies = require('./especies');
+const Razas = require('./razas');
 
 const animalRescatado = sequelize.define('animal_rescatado', {
   id: {
@@ -13,8 +15,15 @@ const animalRescatado = sequelize.define('animal_rescatado', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  raza: {
-    type: DataTypes.STRING
+  idRaza: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'razas',
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    allowNull: false
   },
   sexo: {
     type: DataTypes.STRING
@@ -56,9 +65,15 @@ const animalRescatado = sequelize.define('animal_rescatado', {
     type: DataTypes.STRING,
     defaultValue: 'disponible'
   },
-  especie: {
-    allowNull: false,
-    type: DataTypes.STRING
+  idEspecie: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'especies',
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    allowNull: false
   },
   solicitudesPendientes: {
     allowNull: false,
@@ -88,10 +103,15 @@ animalRescatado.belongsTo(refugio, {
   foreignKey: 'idRefugio'
 })
 
+animalRescatado.belongsTo(Especies, {
+  foreignKey: 'idEspecie'
+})
+
+animalRescatado.belongsTo(Razas, {
+  foreignKey: 'idRaza'
+})
+
 animalRescatado.findAllData = function () {
-  /* mascota.belongsTo(Storage, {
-    foreignKey: 'idStorage',
-  }) */
   return animalRescatado.findAll({ include: [Storage, refugio] })
 }
 
@@ -104,7 +124,10 @@ animalRescatado.findAndCountAllData = function (limit, offset, filtro) {
       model: refugio,
       attributes: { exclude: ['clave'] },
       include: [Storage],
-    }],
+    },
+      {
+        model: Razas
+      }],
     where: filtro,
     limit: limit,
     offset: offset

@@ -8,7 +8,8 @@ module.exports = {
       { id: 2, nombre: 'Pichincha' },
       { id: 3, nombre: 'Guayas' },
       { id: 4, nombre: 'Tungurahua' },
-      // Agrega más provincias aquí
+      { id: 5, nombre: 'Chimborazo' },
+      { id: 6, nombre: 'Cotopaxi' },
     ], {});
   },
 

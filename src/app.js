@@ -46,5 +46,4 @@ app.use('/api', require('./routes'))
 
 app.listen(app.get('port'), () => {
     console.log('Servidor escuchando por el puerto', app.get('port'));
-    console.log('Host de la base de datos', process.env.MYSQL_HOST);
 });

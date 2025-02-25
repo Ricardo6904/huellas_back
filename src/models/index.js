@@ -8,7 +8,9 @@ const models = {
     provinciaModel: require('./provincias'),
     redesSocialesModel: require('./redesSociales'),
     mascotasModel: require('./mascotas'),
-    historialMascotasModel: require('./historialMascotas')
+    historialMascotasModel: require('./historialMascotas'),
+    razasModel: require('./razas'),
+    especiesModel: require('./especies'),
 }
 
 module.exports = models;

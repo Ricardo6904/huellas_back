@@ -15,10 +15,6 @@ router.put('/:id', authMiddleware, animalRescatadoController.actualizarMascota)
 
 router.delete('/:id', authMiddleware, animalRescatadoController.eliminarMascota)
 
-/* router.post('/:id/incrementar-solicitudes', controller.incrementarSolicitudes)
-
-router.post('/:id/decrementar-solicitudes', controller.decrementarSolicitudes)
- */
 router.put('/:id/mascotaAdoptada', authMiddleware, animalRescatadoController.mascotaAdoptada)
 
 module.exports = router

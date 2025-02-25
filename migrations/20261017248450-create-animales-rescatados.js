@@ -16,9 +16,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      raza: {
-        allowNull: false,
-        type: Sequelize.STRING
+      idRaza: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'razas',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false
       },
       sexo: {
         allowNull: false,
@@ -73,9 +79,15 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: 'disponible'
       },
-      especie: {
-        allowNull: false,
-        type: Sequelize.STRING,
+      idEspecie: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'especies',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false
       },
       solicitudesPendientes: {
         allowNull: false,
