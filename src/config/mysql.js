@@ -13,7 +13,7 @@ const sequelize = new Sequelize(
         host,
         dialect: "mysql",
         ssl: {
-            ca: fs.readFileSync(path.resolve(__dirname, '../config/isrgrootx1.pem'))
+            ca: path.join(__dirname, '../config/isrgrootx1.pem')
         }
     },
 )
