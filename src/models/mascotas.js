@@ -2,6 +2,8 @@ const { sequelize } = require('../config/mysql')
 const { DataTypes } = require('sequelize');
 const Storage = require('./storage');
 const Usuario = require('./usuarios');
+const Razas = require('./razas');
+const Especies = require('./especies');
 
 const Mascotas = sequelize.define('mascotas', {
     id: {
@@ -98,6 +100,15 @@ Mascotas.belongsTo(Usuario, {
   as: 'Usuario'
 })
 
+Mascotas.belongsTo(Razas, {
+  foreignKey: 'idRaza'
+})
+
+Mascotas.belongsTo(Especies, {
+  foreignKey: 'idEspecie',
+  as: 'especie'
+})
+
 Mascotas.findAndCountAllData = function (limit, offset, filtro) {
 
   return Mascotas.findAndCountAll({
@@ -117,8 +128,6 @@ Mascotas.findAndCountAllData = function (limit, offset, filtro) {
 }
 
 Mascotas.findOneData = function (id) {
-  console.log('dataaa', id);
-  
   return Mascotas.findOne({
     where: { id: id }, 
     include: [
@@ -130,10 +139,16 @@ Mascotas.findOneData = function (id) {
         model: Usuario,
         as: 'Usuario',
         attributes: ['nombres', 'apellidos', 'celular', 'email']
-    }]
+    },
+    {
+      model: Razas
+    },
+    {
+      model: Especies,
+      as: 'especie'
+    }
+  ]
   })
 }
-
-
 
 module.exports = Mascotas;
