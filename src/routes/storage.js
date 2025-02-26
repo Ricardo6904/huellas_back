@@ -8,6 +8,8 @@ router.get('/:idStorage', storageController.obtenerStoragePorId)
 
 router.get('/', storageController.obtenerStorages)
 
+router.put('/:idStorage', uploadMiddleware.single('file'), compressImage, uploadToR2,storageController.actualizarStorage)
+
 router.post('/', uploadMiddleware.single('file'), compressImage, uploadToR2, storageController.crearStorage)
 
 router.delete('/:idStorage', storageController.eliminarStorage)

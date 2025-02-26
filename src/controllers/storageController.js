@@ -59,6 +59,45 @@ controller.obtenerStoragePorId = async (req, res) => {
     res.send({ data })
 }
 
+controller.actualizarStorage = async (req, res) => {
+    try {
+        const idStorage = req.params.idStorage;
+        const { file } = req;
+
+        if (!file) {
+            return res.status(400).json({ error: 'No se subió ningún archivo' });
+        }
+
+        const currentFile = await storageModel.findByPk(idStorage);
+
+        if (!currentFile) {
+            return res.status(404).json({ error: 'Archivo no encontrado' });
+        }
+
+        const currentFileKey = currentFile.url.replace(`${R2_PUBLIC_URL}/`, '');
+
+        await s3.send(new DeleteObjectCommand({
+            Bucket: 'adoptahuellas',
+            Key: currentFileKey,
+        }));
+
+        const newFileUrl = `${R2_PUBLIC_URL}/${file.filename}`;
+
+        const updatedFileData = {
+            filename: file.originalname,
+            url: newFileUrl,
+        };
+
+        const data = await storageModel.update(updatedFileData, {
+            where: { id: idStorage },
+        });
+
+        res.send({ data });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al actualizar el archivo' });
+    }
+};
 
 controller.eliminarStorage = async (req, res) => {
     try {
