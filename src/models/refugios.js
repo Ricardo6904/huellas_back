@@ -2,6 +2,8 @@ const { sequelize } = require('../config/mysql')
 const { DataTypes, Sequelize } = require('sequelize')
 const Storage = require('./storage')
 const RedSocial = require('./redesSociales');
+const Ciudad = require('./ciudades');
+const Provincia = require('./provincias');
 
 const refugio = sequelize.define('refugios', {
     id: {
@@ -88,6 +90,16 @@ refugio.hasMany(RedSocial, {
     as: 'redesSociales' // Alias para la relación
 });
 
+refugio.belongsTo(Ciudad, {
+    foreignKey: 'idCiudad',
+    as: 'Ciudad'
+})
+
+refugio.belongsTo(Provincia, {
+    foreignKey: 'idProvincia',
+    as: 'Provincia'
+})
+
 refugio.findOneData = function (idRefugio) {
     return refugio.findOne({
         where: { id: idRefugio },
@@ -99,6 +111,14 @@ refugio.findOneData = function (idRefugio) {
             {
                 model: RedSocial,
                 as: 'redesSociales' // Alias para la relación con redes sociales
+            },
+            {
+                model: Ciudad,
+                as: 'Ciudad'
+            },
+            {
+                model: Provincia,
+                as: 'Provincia'
             }
         ]
     });
