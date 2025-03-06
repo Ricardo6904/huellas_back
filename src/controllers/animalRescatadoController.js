@@ -67,6 +67,7 @@ controller.obtenerMascotas = async (req, res) => {
         handleErrors(res, 'ERROR_GET_MASCOTA', 403)
     }
 }
+
 controller.obtenerMascotasPorIdFundacion = async (req, res) => {
     try {
         //parámetros de paginación
@@ -85,14 +86,11 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
             filtro.nombre = { [Op.like]: `%${nombre}%` };
         }
 
-
-        const { count, rows } = await animalRescatadoModel.findAndCountAllData(
+        const { count, rows } = await animalRescatadoModel.findAndCountAllDataRefugio(
             limit,
             offset,
             filtro
         )
-
-
 
         res.send({
             data: rows,
@@ -101,6 +99,8 @@ controller.obtenerMascotasPorIdFundacion = async (req, res) => {
             currentPage: page
         })
     } catch (error) {
+        console.log(error);
+        
         handleErrors(res, 'ERROR_GET_MASCOTA_FUNDACION', 403)
     }
 }
@@ -190,64 +190,6 @@ controller.eliminarMascota = async (req, res) => {
         handleHttpError(res, 'ERROR_DELETE_MASCOTA', 403)
     }
 }
-
-controller.incrementarSolicitudes = async (req, res) => {
-    try {
-        const { id } = req.params;
-        
-        // Buscar la mascota por ID
-        const mascota = await animalRescatadoModel.findByPk(id);
-
-        // Verificar si la mascota existe
-        if (!mascota) {
-            return res.status(404).send({ message: 'Mascota no encontrada' });
-        }
-
-        // Verificar el estado de la mascota
-        if (mascota.estado === 'adoptado') {
-            return res.status(400).send({ message: 'No se pueden realizar solicitudes para una mascota adoptada' });
-        }
-
-        // Incrementar solicitudes pendientes
-        if (mascota.solicitudesPendientes < 3)
-            mascota.solicitudesPendientes += 1;
-
-        await mascota.save();
-
-        res.send({ message: 'Solicitud registrada', data: mascota });
-    } catch (error) {
-        console.error(error);
-        handleErrors(res, 'ERROR_INCREMENTAR_SOLICITUDES', 500);
-    }
-}
-
-controller.decrementarSolicitudes = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        // Buscar la mascota por ID
-        const mascota = await animalRescatadoModel.findByPk(id);
-
-        // Verificar si la mascota existe
-        if (!mascota) {
-            return res.status(404).send({ message: 'Mascota no encontrada' });
-        }
-
-        // Verificar que el número de solicitudes pendientes sea mayor a 0
-        if (mascota.solicitudesPendientes === 0) {
-            return res.status(400).send({ message: 'No hay solicitudes pendientes para decrementar' });
-        }
-
-        // Decrementar solicitudes pendientes
-        mascota.solicitudesPendientes -= 1;
-        await mascota.save();
-
-        res.send({ message: 'Solicitud eliminada', data: mascota });
-    } catch (error) {
-        console.error(error);
-        handleErrors(res, 'ERROR_DECREMENTAR_SOLICITUDES', 500);
-    }
-};
 
 //todo
 controller.mascotaAdoptada = async(req,res) => {

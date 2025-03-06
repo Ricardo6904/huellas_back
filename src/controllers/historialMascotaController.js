@@ -33,54 +33,6 @@ controller.obtenerHistorialMascotas = async (req, res) => {
     }
 }
 
-/* 
-controller.obtenerHistorialMascotas = async (req, res) => {
-    try {
-        //parámetros de paginación
-        const limit = parseInt(req.query.limit) || 10;
-        const page = parseInt(req.query.page) || 1;
-        const offset = (page - 1) * limit;
-
-        //filtros de búsqueda
-        const { nombre, edad, raza, tamano } = req.query;
-
-        let filtro = {
-            estado: {
-                [Op.notIn]: ['adoptado','pendiente']
-            }
-        };
-
-        if (nombre)
-            filtro.nombre = { [Op.like]: `%${nombre}%` };
-        if (edad)
-            filtro.edad = edad;
-        if (raza)
-            filtro.raza = raza;
-        if (tamano)
-            filtro.tamano = tamano;
-
-
-        //consulta con paginación usando limit y offset
-        const { count, rows } = await historialMascotasModel.findAndCountAllData(
-            limit,
-            offset,
-            filtro
-        )
-
-        //devolver la respuesta con datos y paginación
-        res.send({
-            data: rows,
-            total: count,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page
-        })
-    } catch (error) {
-        console.log(error);
-        
-        handleErrors(res, 'ERROR_GET_MASCOTA', 403)
-    }
-} */
-
 controller.obtenerHistorialMascotasPorIdUsuario = async (req, res) => {
     try {
         //parámetros de paginación

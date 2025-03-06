@@ -158,30 +158,42 @@ controller.actualizarMascota = async (req, res) => {
     }
 }
 
-
 controller.eliminarMascota = async (req, res) => {
     try {
-        const id = req.params.id
-        const mascota = await mascotasModel.findOneData(id)
-        const data = await animalRescatado.destroy({ where: { id: id } })
-        const idStorage = mascota.idStorage
+        const id = req.params.id;
+        const mascota = await mascotasModel.findOneData(id);
 
-        const dataFile = await storageModel.findByPk(idStorage)
-        const { filename } = dataFile
+        if (!mascota) {
+            return res.status(404).json({ error: 'Mascota no encontrada' });
+        }
 
-        const filePath = `${MEDIA_PATH}/${filename}`
+        // Eliminar la mascota de la base de datos
+        await mascotasModel.destroy({ where: { id } });
 
-        fs.unlinkSync(filePath)
+        // Si tiene una imagen almacenada, eliminarla
+        if (mascota.idStorage) {
+            const dataFile = await storageModel.findByPk(mascota.idStorage);
+            if (dataFile) {
+                const { filename } = dataFile;
+                const filePath = `${MEDIA_PATH}/${filename}`;
 
-        const dataStorage = await storageModel.destroy({ where: { id: idStorage } })
+                // Verificar si el archivo existe antes de eliminarlo
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
 
-        res.send({ msg: 'Mascota eliminada' })
+                await storageModel.destroy({ where: { id: mascota.idStorage } });
+            }
+        }
+
+        res.json({ msg: 'Mascota eliminada' });
+
     } catch (error) {
-        console.log(error);
-
-        handleHttpError(res, 'ERROR_DELETE_MASCOTA', 403)
+        console.error(error);
+        res.status(500).json({ error: 'ERROR_DELETE_MASCOTA' });
     }
-}
+};
+
 
 controller.cambiarEstado = async (req, res) => {
     try {

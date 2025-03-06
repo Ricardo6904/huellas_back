@@ -134,6 +134,19 @@ animalRescatado.findAndCountAllData = function (limit, offset, filtro) {
   })
 }
 
+animalRescatado.findAndCountAllDataRefugio = function (limit, offset, filtro) {
+
+  return animalRescatado.findAndCountAll({
+    include: [
+      {
+        model: Razas
+      }],
+    where: filtro,
+    limit: limit,
+    offset: offset
+  })
+}
+
 animalRescatado.findOneData = function (id) {
   animalRescatado.belongsTo(Storage, {
     foreignKey: 'idStorage'
