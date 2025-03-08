@@ -15,7 +15,7 @@ router.put('/:id', authMiddleware, mascotaController.actualizarMascota)
 
 router.delete('/:id', authMiddleware, mascotaController.eliminarMascota)
 
-router.put('/estado/:id', authMiddleware, mascotaController.cambiarEstado)
+router.put('/estado/:id', mascotaController.cambiarEstado)
 
 router.get('/redirect/:id', mascotaController.redirigirMascota);
 

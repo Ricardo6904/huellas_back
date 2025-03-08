@@ -19,7 +19,7 @@ const sequelize = new Sequelize(
                 rejectUnauthorized: true,
                 ca: fs.readFileSync(path.resolve(__dirname, '../../config/isrgrootx1.pem'))
             }
-        } 
+        }
     }
 )
 
