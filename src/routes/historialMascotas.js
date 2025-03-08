@@ -9,7 +9,7 @@ router.get('/:id', historialMascotasController.obtener)
 
 router.get('/usuario/:id', historialMascotasController.obtenerHistorialMascotasPorIdUsuario)
 
-router.post('/', authMiddleware, historialMascotasController.crear)
+router.post('/', historialMascotasController.crear)
 
 router.put('/:id', authMiddleware, historialMascotasController.actualizar)
 
